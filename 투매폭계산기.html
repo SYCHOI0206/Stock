@@ -10,14 +10,51 @@ body {
   background: #0d0f14;
   font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
   min-height: 100vh;
-  display: flex; flex-direction: column; align-items: center;
   padding: 30px 16px 60px; color: #f1f5f9;
 }
+
+/* 전체 레이아웃 */
+.page-wrap {
+  display: flex; gap: 20px; max-width: 1000px; margin: 0 auto; align-items: flex-start;
+}
+.main-col { flex: 1; display: flex; flex-direction: column; align-items: center; min-width: 0; }
+.hist-col {
+  width: 280px; flex-shrink: 0;
+  background: #161b24; border: 1px solid #1e293b; border-radius: 16px;
+  padding: 16px; position: sticky; top: 20px; max-height: 90vh; overflow-y: auto;
+}
+@media(max-width:720px){
+  .page-wrap { flex-direction: column; }
+  .hist-col { width: 100%; position: static; max-height: none; }
+}
+/* 히스토리 */
+.hist-title { font-size: 12px; font-weight: 800; color: #4ade80; letter-spacing: 2px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+.hist-clear { font-size: 10px; color: #475569; cursor: pointer; padding: 3px 8px; border: 1px solid #1e293b; border-radius: 6px; background: none; font-family: inherit; }
+.hist-clear:hover { color: #f87171; border-color: #f87171; }
+.hist-empty { font-size: 11px; color: #334155; text-align: center; padding: 20px 0; }
+.hist-item {
+  background: #0d0f14; border: 1px solid #1e293b; border-radius: 10px;
+  padding: 10px 12px; margin-bottom: 8px; cursor: pointer;
+  transition: border-color 0.15s;
+}
+.hist-item:hover { border-color: #4ade8066; }
+.hist-item.active-hist { border-color: #4ade80; background: #0f1e12; }
+.hist-name { font-size: 13px; font-weight: 800; color: #f1f5f9; margin-bottom: 4px; }
+.hist-meta { font-size: 10px; color: #475569; margin-bottom: 6px; }
+.hist-row { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 2px; }
+.hist-row-label { color: #64748b; }
+.hist-row-val { font-weight: 700; }
+.hist-badge {
+  display: inline-block; font-size: 9px; font-weight: 700;
+  padding: 1px 6px; border-radius: 4px; margin-top: 4px;
+  background: #1e293b; color: #94a3b8;
+}
+.hist-del { float: right; font-size: 10px; color: #334155; cursor: pointer; margin-left: 6px; }
+.hist-del:hover { color: #f87171; }
 .subtitle { font-size: 11px; letter-spacing: 4px; color: #4ade80; margin-bottom: 8px; text-align: center; }
 h1 { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 6px; }
-.desc { font-size: 12px; color: #64748b; text-align: center; margin-bottom: 24px; }
 
-.card {
+.desc { font-size: 12px; color: #64748b; text-align: center; margin-bottom: 24px; }
   background: #161b24; border: 1px solid #1e293b; border-radius: 16px;
   padding: 20px; width: 100%; max-width: 480px; margin-bottom: 16px;
 }
@@ -178,13 +215,20 @@ h1 { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 6px; 
 </style>
 </head>
 <body>
-
 <div class="subtitle">DATA-DRIVEN ANALYSIS</div>
 <h1>투매폭 계산기</h1>
 <p class="desc">저점 · 고점 입력 → 투매폭 & 매수 구역 자동 분석</p>
 
+<div class="page-wrap">
+<!-- ===== 메인 컬럼 ===== -->
+<div class="main-col">
+
 <!-- 입력 -->
 <div class="card">
+  <div class="cur-row" style="margin-bottom:14px">
+    <div class="cur-label">종목명 <span>· 선택입력</span></div>
+    <input id="nameInput" type="text" placeholder="예) 삼성전자" style="width:100%;background:#0d0f14;border:2px solid #4ade8044;border-radius:10px;padding:10px 14px;font-size:16px;font-weight:700;font-family:inherit;outline:none;color:#4ade80;"/>
+  </div>
   <div class="input-row">
     <div class="input-group"><div class="input-label">저점 (₩)</div>
       <input id="lowInput" type="number" placeholder="예) 47550"/></div>
@@ -275,7 +319,7 @@ h1 { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 6px; 
     <div class="legend-item"><div class="legend-dot" style="background:#1e1a04;border:1px solid #fbbf24"></div>평균투매가</div>
     <div class="legend-item"><div class="legend-dot" style="background:#2d1a00;border:2px solid #f59e0b"></div>⚡핵심매수</div>
     <div class="legend-item"><div class="legend-dot" style="background:#1a1400;border:1.5px solid #f59e0b99"></div>5단매수</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#120f00;border:1.5px solid #f8717199"></div>CI하단</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#120f00;border:1.5px solid #f8717199"></div>신뢰구간 하단</div>
     <div class="legend-item"><div class="legend-dot" style="background:#2e1a4a;border:1px solid #a78bfa"></div>현재가</div>
     <div class="legend-item"><div class="legend-dot" style="background:#0c2a40"></div>저점</div>
   </div>
@@ -291,6 +335,21 @@ h1 { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 6px; 
     신뢰구간: X̄ ± 2.58×(s/√n) | 99% 신뢰수준<br/>출처: 태쏘의 데이트레이딩 바이블 2 [표 2]
   </div>
 </div>
+
+</div><!-- /main-col -->
+
+<!-- ===== 히스토리 컬럼 ===== -->
+<div class="hist-col">
+  <div class="hist-title">
+    📋 계산 히스토리
+    <button class="hist-clear" onclick="clearHistory()">전체삭제</button>
+  </div>
+  <div id="histList">
+    <div class="hist-empty">아직 계산 기록이 없습니다</div>
+  </div>
+</div>
+
+</div><!-- /page-wrap -->
 
 <script>
 var DATA=[
@@ -460,8 +519,8 @@ function calc(){
     var isBot5  = (idx===botIdx);
     var note = "";
     if(isCore) note = "⚡핵심";
-    else if(rank===0) note = "CI상단";
-    else if(isBot5) note = "CI하단";
+    else if(rank===0) note = "신뢰구간 상단";
+    else if(isBot5) note = "신뢰구간 하단";
 
     var rowStyle = "display:grid;grid-template-columns:56px 1fr 72px 52px 60px;gap:4px;padding:9px 10px;"+
       "background:"+c.bg+";border:1.5px solid "+c.border+";border-radius:8px;align-items:center;margin-bottom:3px;"+
@@ -551,7 +610,7 @@ function calc(){
     else if(isMean)       {badge="평균투매가";                   badgeBg="#fbbf24";}
     else if(isBuy)        {badge="매수";                        badgeBg="#4ade80";}
     else if(is5danNotCore){badge=(dan5rank+1)+"단"; badgeBg="#b45309"; badgeColor="#fff";}
-    else if(isBotZone)    {badge="CI하단";  badgeBg="#f87171";}
+    else if(isBotZone)    {badge="신뢰구간 하단"; badgeBg="#f87171";}
 
     seg.innerHTML=
       '<span class="zone-num">'+(isTop?"▲":isBot?"▼":i)+'</span>'+
@@ -560,6 +619,77 @@ function calc(){
     zbar.appendChild(seg);
   }
   show("sZones");
+
+  // ===== 히스토리 저장 =====
+  var name = document.getElementById("nameInput").value.trim() || "종목 "+(histData.length+1);
+  var now  = new Date();
+  var timeStr = (now.getMonth()+1)+"/"+(now.getDate())+" "+(now.getHours()<10?"0":"")+now.getHours()+":"+(now.getMinutes()<10?"0":"")+now.getMinutes();
+
+  // 동일 종목명 + 저점 + 고점이면 기존 항목 제거 (중복 방지)
+  histData = histData.filter(function(h){
+    return !(h.name===name && h.low===lv && h.high===hv);
+  });
+
+  histData.unshift({
+    name: name, time: timeStr,
+    low: lv, high: hv,
+    rise: rise, zone: row.label,
+    mean: pM, core: cPrice, coreDrop: fd(cDrop),
+    dan1: zones[dan5[0]], dan5end: zones[dan5[4]]
+  });
+  if(histData.length>30) histData.pop();
+  renderHistory();
+}
+
+// ===== 히스토리 렌더링 =====
+var histData=[];
+var activeHistIdx=-1;
+
+function renderHistory(){
+  var wrap=document.getElementById("histList");
+  if(histData.length===0){
+    wrap.innerHTML='<div class="hist-empty">아직 계산 기록이 없습니다</div>';
+    return;
+  }
+  wrap.innerHTML="";
+  histData.forEach(function(h,idx){
+    var div=document.createElement("div");
+    div.className="hist-item"+(idx===0?" active-hist":"");
+    div.onclick=function(){ loadHistory(idx); };
+    div.innerHTML=
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start">'+
+        '<div class="hist-name">'+h.name+'</div>'+
+        '<span class="hist-del" onclick="event.stopPropagation();delHistory('+idx+')">✕</span>'+
+      '</div>'+
+      '<div class="hist-meta">'+h.time+' · '+h.zone+'</div>'+
+      '<div class="hist-row"><span class="hist-row-label">저점</span><span class="hist-row-val" style="color:#38bdf8">'+fmt(h.low)+'원</span></div>'+
+      '<div class="hist-row"><span class="hist-row-label">고점</span><span class="hist-row-val" style="color:#f87171">'+fmt(h.high)+'원</span></div>'+
+      '<div class="hist-row"><span class="hist-row-label">상승률</span><span class="hist-row-val" style="color:#fbbf24">+'+fd(h.rise)+'%</span></div>'+
+      '<div class="hist-row"><span class="hist-row-label">⚡핵심매수</span><span class="hist-row-val" style="color:#f59e0b">'+fmt(h.core)+'원</span></div>'+
+      '<div class="hist-row"><span class="hist-row-label">평균투매가</span><span class="hist-row-val" style="color:#fbbf24">'+fmt(h.mean)+'원</span></div>'+
+      '<div class="hist-row"><span class="hist-row-label">1단매수</span><span class="hist-row-val" style="color:#4ade80">'+fmt(h.dan1)+'원</span></div>';
+    wrap.appendChild(div);
+  });
+}
+
+function loadHistory(idx){
+  var h=histData[idx];
+  document.getElementById("nameInput").value=h.name;
+  document.getElementById("lowInput").value=h.low;
+  document.getElementById("highInput").value=h.high;
+  document.getElementById("curInput").value="";
+  // active 표시
+  document.querySelectorAll(".hist-item").forEach(function(el,i){ el.classList.toggle("active-hist",i===idx); });
+  calc();
+}
+
+function delHistory(idx){
+  histData.splice(idx,1);
+  renderHistory();
+}
+
+function clearHistory(){
+  if(confirm("기록을 모두 삭제할까요?")){ histData=[]; renderHistory(); }
 }
 </script>
 </body>
