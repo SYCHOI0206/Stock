@@ -625,8 +625,15 @@ function calc(){
     name: name, time: timeStr,
     low: lv, high: hv,
     rise: rise, zone: row.label,
-    mean: pM, core: cPrice, coreDrop: fd(cDrop),
-    dan1: zones[dan5[0]], dan5end: zones[dan5[4]]
+    core: cPrice,
+    ty: tyPrice, sami: samiPrice,
+    pre2: zones[Math.min(20, dan5[0]+2)],  // 1단 위 2칸
+    pre1: zones[Math.min(20, dan5[0]+1)],  // 1단 위 1칸
+    d1: zones[dan5[0]],
+    d2: zones[dan5[1]],
+    d3: zones[dan5[2]],
+    d4: zones[dan5[3]],
+    d5: zones[dan5[4]]
   });
   if(histData.length>30) histData.pop();
   renderHistory();
@@ -647,6 +654,8 @@ function renderHistory(){
     var div=document.createElement("div");
     div.className="hist-item"+(idx===0?" active-hist":"");
     div.onclick=function(){ loadHistory(idx); };
+    var tyOn   = (h.rise >= 50 && h.rise < 100);
+    var samiOn = (h.rise >= 100);
     div.innerHTML=
       '<div style="display:flex;justify-content:space-between;align-items:flex-start">'+
         '<div class="hist-name">'+h.name+'</div>'+
@@ -656,9 +665,23 @@ function renderHistory(){
       '<div class="hist-row"><span class="hist-row-label">저점</span><span class="hist-row-val" style="color:#38bdf8">'+fmt(h.low)+'원</span></div>'+
       '<div class="hist-row"><span class="hist-row-label">고점</span><span class="hist-row-val" style="color:#f87171">'+fmt(h.high)+'원</span></div>'+
       '<div class="hist-row"><span class="hist-row-label">상승률</span><span class="hist-row-val" style="color:#fbbf24">+'+fd(h.rise)+'%</span></div>'+
-      '<div class="hist-row"><span class="hist-row-label">⚡핵심매수</span><span class="hist-row-val" style="color:#f59e0b">'+fmt(h.core)+'원</span></div>'+
-      '<div class="hist-row"><span class="hist-row-label">평균투매가</span><span class="hist-row-val" style="color:#fbbf24">'+fmt(h.mean)+'원</span></div>'+
-      '<div class="hist-row"><span class="hist-row-label">1단매수</span><span class="hist-row-val" style="color:#4ade80">'+fmt(h.dan1)+'원</span></div>';
+      '<div style="height:1px;background:#1e293b;margin:5px 0"></div>'+
+      '<div class="hist-row" style="'+(tyOn?'background:#0f2310;border-radius:6px;padding:2px 4px;':'opacity:0.4;')+'">' +
+        '<span class="hist-row-label">'+(tyOn?'🟢':'⬜')+' 땡큐선'+(tyOn?' 🔔':'')+'</span>' +
+        '<span class="hist-row-val" style="color:'+(tyOn?'#4ade80':'#475569')+'">'+fmt(h.ty)+'원</span>'+
+      '</div>'+
+      '<div class="hist-row" style="'+(samiOn?'background:#1c1000;border-radius:6px;padding:2px 4px;':'opacity:0.4;')+'">' +
+        '<span class="hist-row-label">'+(samiOn?'🟡':'⬜')+' 싸미선'+(samiOn?' 🔔':'')+'</span>' +
+        '<span class="hist-row-val" style="color:'+(samiOn?'#f59e0b':'#475569')+'">'+fmt(h.sami)+'원</span>'+
+      '</div>'+
+      '<div style="height:1px;background:#1e293b;margin:5px 0"></div>'+
+      '<div class="hist-row"><span class="hist-row-label" style="color:#f87171">매도2</span><span class="hist-row-val" style="color:#f87171">'+fmt(h.pre2)+'원</span></div>'+
+      '<div class="hist-row"><span class="hist-row-label" style="color:#fca5a5">매도1</span><span class="hist-row-val" style="color:#fca5a5">'+fmt(h.pre1)+'원</span></div>'+
+      '<div class="hist-row"><span class="hist-row-label">1단매수</span><span class="hist-row-val" style="color:#86efac">'+fmt(h.d1)+'원</span></div>'+
+      '<div class="hist-row"><span class="hist-row-label">2단매수</span><span class="hist-row-val" style="color:#4ade80">'+fmt(h.d2)+'원</span></div>'+
+      '<div class="hist-row"><span class="hist-row-label">3단매수</span><span class="hist-row-val" style="color:#4ade80">'+fmt(h.d3)+'원</span></div>'+
+      '<div class="hist-row"><span class="hist-row-label">4단매수</span><span class="hist-row-val" style="color:#22c55e">'+fmt(h.d4)+'원</span></div>'+
+      '<div class="hist-row"><span class="hist-row-label">5단매수</span><span class="hist-row-val" style="color:#16a34a">'+fmt(h.d5)+'원</span></div>';
     wrap.appendChild(div);
   });
 }
