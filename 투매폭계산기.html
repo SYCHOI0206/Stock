@@ -27,7 +27,35 @@ body {
   .page-wrap { flex-direction: column; }
   .hist-col { width: 100%; position: static; max-height: none; }
 }
-/* 히스토리 */
+/* 땡큐 신호 */
+.thankyou-box {
+  width: 100%; max-width: 480px; border-radius: 16px;
+  padding: 20px; display: none; margin-bottom: 16px;
+  text-align: center;
+}
+.thankyou-box.show { display: block; }
+.thankyou-on {
+  background: linear-gradient(135deg, #052e16, #14532d);
+  border: 2px solid #4ade80;
+  box-shadow: 0 0 30px #4ade8044;
+  animation: pulse 1.5s infinite;
+}
+.thankyou-off {
+  background: #161b24;
+  border: 1px solid #1e293b;
+}
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 20px #4ade8033; }
+  50%      { box-shadow: 0 0 40px #4ade8088; }
+}
+.ty-icon  { font-size: 36px; margin-bottom: 8px; }
+.ty-title { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+.ty-price { font-size: 28px; font-weight: 800; margin-bottom: 4px; }
+.ty-sub   { font-size: 11px; color: #94a3b8; margin-bottom: 12px; line-height: 1.6; }
+.ty-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.ty-item  { background: #0d0f14; border-radius: 8px; padding: 10px; }
+.ty-item-label { font-size: 9px; color: #475569; margin-bottom: 4px; }
+.ty-item-value { font-size: 14px; font-weight: 800; }
 .hist-title { font-size: 12px; font-weight: 800; color: #4ade80; letter-spacing: 2px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
 .hist-clear { font-size: 10px; color: #475569; cursor: pointer; padding: 3px 8px; border: 1px solid #1e293b; border-radius: 6px; background: none; font-family: inherit; }
 .hist-clear:hover { color: #f87171; border-color: #f87171; }
@@ -255,50 +283,21 @@ h1 { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 6px; 
 </div>
 
 <!-- 매수 구역 -->
-<div class="section s-buy" id="sBuy">
-  <div class="section-label" style="color:#f59e0b">🎯 매수 분석</div>
-
-  <!-- 핵심 매수포인트 -->
-  <div class="core-box">
-    <div class="core-left">
-      <div class="core-tag">⚡ 핵심 매수포인트</div>
-      <div class="core-price" id="corePrice"></div>
-      <div class="core-sub" id="coreSub"></div>
+<!-- 땡큐 & 싸미 신호 -->
+<div class="thankyou-box" id="sThankyou" style="display:none;">
+  <div style="display:flex;gap:10px;align-items:stretch;">
+    <!-- 땡큐 -->
+    <div id="tyBox_wrap" style="flex:1;border-radius:14px;padding:3px;background:#1e293b;">
+      <div style="border-radius:12px;background:#0d1117;height:100%;" id="tyBox_content"></div>
     </div>
-    <div class="core-right">
-      <div class="core-zone" id="coreZone"></div>
-      <div class="core-drop" id="coreDrop"></div>
-      <div style="font-size:9px;color:#94a3b8">고점 대비 하락</div>
+    <!-- 싸미 -->
+    <div id="samiBox_wrap" style="flex:1;border-radius:14px;padding:3px;background:#1e293b;">
+      <div style="border-radius:12px;background:#0d1117;height:100%;" id="samiBox_content"></div>
     </div>
   </div>
-
-  <!-- 후보군 -->
-  <div class="candidate-box" id="candidateBox">
-    <div>
-      <div class="cand-label">🔵 매수 후보군 (신뢰구간 진입 직전)</div>
-      <div class="cand-sub" id="candSub"></div>
-    </div>
-    <div>
-      <div class="cand-price" id="candPrice"></div>
-      <div class="cand-drop" id="candDrop"></div>
-    </div>
+  <div style="font-size:10px;color:#475569;text-align:center;margin-top:10px">
+    땡큐(고점-22%) · 싸미(고점-33%) | 상승률 +<span id="tyRiseLabel"></span>%
   </div>
-
-  <!-- 신뢰구간 범위 -->
-  <div class="ci-range-box">
-    <div class="ci-range-title">📐 매수 구역 범위 (99% 신뢰구간)</div>
-
-    <div class="ci-info-grid" id="ciInfoGrid"></div>
-  </div>
-
-  <div style="font-size:10px;color:#475569;text-align:center;line-height:1.6" id="buyNote"></div>
-</div>
-
-<!-- 5단 매수 요약 -->
-<div class="section" id="s5dan" style="background:#0d1117;border:1px solid #f59e0b44;display:none;">
-  <div class="section-label" style="color:#f59e0b">📋 5단 매수 계획</div>
-  <div id="dan5Grid"></div>
-  <div style="font-size:10px;color:#475569;text-align:center;margin-top:10px" id="dan5Note"></div>
 </div>
 
 <!-- 현재가 -->
@@ -383,7 +382,7 @@ function calc(){
 
   DATA.forEach(function(_,i){document.getElementById("row-"+i).classList.remove("active");});
   ["riseBox","warnBox"].forEach(function(id){document.getElementById(id).classList.remove("show");});
-  ["sResult","sBuy","s5dan","sCur","sZones"].forEach(function(id){hide(id);});
+  ["sResult","sThankyou","sCur","sZones"].forEach(function(id){hide(id);});
 
   if(isNaN(lv)||isNaN(hv)||lv<=0||hv<=lv){alert("저점과 고점을 올바르게 입력해주세요.");return;}
 
@@ -462,98 +461,90 @@ function calc(){
   var cPrice=zones[coreIdx];
   var cDrop=((hv-cPrice)/hv)*100;
 
-  // 핵심 매수포인트
-  document.getElementById("corePrice").textContent=fmt(cPrice)+"원";
-  document.getElementById("coreSub").textContent="평균 투매가("+fmt(pM)+"원)와 "+fmt(Math.abs(cPrice-pM))+"원 차이";
-  document.getElementById("coreZone").textContent="구역 "+coreIdx+"번";
-  document.getElementById("coreDrop").textContent="-"+fd(cDrop)+"%";
-
-  // 후보군
-  if(candIdx>=0){
-    var cprice=zones[candIdx];
-    var cdrop=((hv-cprice)/hv)*100;
-    document.getElementById("candPrice").textContent=fmt(cprice)+"원";
-    document.getElementById("candDrop").textContent="-"+fd(cdrop)+"% (고점 대비)";
-    document.getElementById("candSub").textContent="구역 "+candIdx+"번 | 신뢰구간 상단("+fmt(pH)+"원)보다 "+fmt(cprice-pH)+"원 위";
-    document.getElementById("candidateBox").style.display="flex";
-  } else {
-    document.getElementById("candidateBox").style.display="none";
-  }
-
-  // 신뢰구간 범위 시각화 바
-  // 바 범위: pL ~ (candIdx>=0 ? zones[candIdx] : pH) 를 100%로
-    '<div class="ci-info-item" style="background:#1e1a04;border:1px solid #fbbf2433"><div class="ci-info-label" style="color:#fbbf24">⭐ 평균 투매가</div><div class="ci-info-value" style="color:#fbbf24">'+fmt(pM)+'원</div><div class="ci-info-sub">고점 대비 -'+row.mean+'%</div></div>'+
-    '<div class="ci-info-item" style="background:#2d1a00;border:1px solid #f59e0b55"><div class="ci-info-label" style="color:#f59e0b">⚡ 핵심 매수포인트</div><div class="ci-info-value" style="color:#f59e0b">'+fmt(cPrice)+'원</div><div class="ci-info-sub">구역 '+coreIdx+'번 · -'+fd(cDrop)+'%</div></div>';
-
-  document.getElementById("buyNote").textContent=
-    "매수구역 "+buyIdxs.length+"개 구역 포괄 | "+fmt(pL)+"원 ~ "+fmt(pH)+"원";
-  show("sBuy");
-
-  // ===== 5단 매수 요약 =====
-  // dan5[0]=1단(신뢰구간상단 최근접), dan5[4]=5단(가장 낮음)
-  // 화면: 높은 가격(1단) → 낮은 가격(5단) 순
-  var dan5names = ["1단","2단","3단","4단","5단"];
-  var dan5colors = [
-    {bg:"#0f2a1a", border:"#86efac", price:"#86efac"},  // 1단 (신뢰구간상단 근접)
-    {bg:"#0f2310", border:"#4ade80", price:"#4ade80"},  // 2단
-    {bg:"#2d1a00", border:"#f59e0b", price:"#f59e0b"},  // 3단 (핵심 근접 가능)
-    {bg:"#1a1400", border:"#f59e0b99", price:"#d97706"},// 4단
-    {bg:"#2a0f0f", border:"#f8717199", price:"#f87171"} // 5단 (신뢰구간하단 근접)
-  ];
-
-  var g5 = document.getElementById("dan5Grid");
-  g5.innerHTML = "";
-
-  // 헤더
-  var hdr = document.createElement("div");
-  hdr.style.cssText = "display:grid;grid-template-columns:56px 1fr 72px 52px 60px;gap:4px;padding:6px 10px;font-size:10px;color:#475569;font-weight:700;margin-bottom:4px;";
-  hdr.innerHTML = "<span>단계</span><span>매수 가격</span><span style='text-align:right'>고점대비</span><span style='text-align:right'>구역</span><span style='text-align:right'>비고</span>";
-  g5.appendChild(hdr);
-
-  dan5.forEach(function(idx, rank){
-    var zp   = zones[idx];
-    var zd   = ((hv-zp)/hv)*100;
-    var c    = dan5colors[rank];
-    var name = dan5names[rank];
-    var isCore  = (idx===coreIdx);
-    var isBot5  = (idx===botIdx);
-    var note = "";
-    if(isCore) note = "⚡핵심";
-    else if(rank===0) note = "신뢰구간 상단";
-    else if(isBot5) note = "신뢰구간 하단";
-
-    var rowStyle = "display:grid;grid-template-columns:56px 1fr 72px 52px 60px;gap:4px;padding:9px 10px;"+
-      "background:"+c.bg+";border:1.5px solid "+c.border+";border-radius:8px;align-items:center;margin-bottom:3px;"+
-      (isCore?"box-shadow:0 0 12px #f59e0b55;":"");
-
-    var row = document.createElement("div");
-    row.style.cssText = rowStyle;
-    row.innerHTML =
-      '<span style="font-size:12px;font-weight:800;color:'+c.price+'">'+name+'</span>'+
-      '<span style="font-size:16px;font-weight:800;color:'+c.price+'">'+fmt(zp)+'원</span>'+
-      '<span style="font-size:11px;color:#64748b;text-align:right">-'+fd(zd)+'%</span>'+
-      '<span style="font-size:10px;color:#475569;text-align:right">'+idx+'번</span>'+
-      '<span style="font-size:10px;font-weight:700;color:'+(isCore?"#f59e0b":rank===0?"#4ade80":isBot5?"#f87171":"#475569")+';text-align:right">'+note+'</span>';
-    g5.appendChild(row);
-  });
-
-  // 신뢰구간 하단 구역 별도 표시
-  var botPrice = zones[botIdx];
-  var botDrop  = ((hv-botPrice)/hv)*100;
-  var botRow = document.createElement("div");
-  botRow.style.cssText = "margin-top:8px;padding:10px 14px;background:#1a0a0a;border:1.5px dashed #f8717166;border-radius:8px;display:flex;justify-content:space-between;align-items:center;";
-  botRow.innerHTML =
-    '<div><div style="font-size:10px;color:#f87171;margin-bottom:2px">🔴 신뢰구간 하단 (최근접 구역)</div>'+
-    '<div style="font-size:9px;color:#475569">구역 '+botIdx+'번 · 고점 대비 -'+fd(botDrop)+'%</div></div>'+
-    '<div style="font-size:18px;font-weight:800;color:#f87171">'+fmt(botPrice)+'원</div>';
-  g5.appendChild(botRow);
-
-  document.getElementById("dan5Note").textContent =
-    "1단("+fmt(zones[dan5[0]])+"원) ~ 5단("+fmt(zones[dan5[4]])+"원) | 구간 간격 "+fmt(step)+"원";
-  show("s5dan");
-
   // 현재가
   var hasCur=!isNaN(cv)&&cv>0&&cv<=hv;
+
+  // ===== 땡큐선 & 싸미선 계산 =====
+  var tyPrice   = hv * (1 - 0.22);  // 땡큐: 고점 대비 22% 하락
+  var samiPrice = hv * (1 - 0.33);  // 싸미: 고점 대비 33% 하락
+  var tyBox     = document.getElementById("sThankyou");
+  tyBox.style.display = "block";
+
+  // 신호 활성 조건
+  var tyActive   = (rise >= 50 && rise < 100);   // 50~100% → 땡큐 신호
+  var samiActive = (rise >= 100);                  // 100% 이상 → 싸미 신호
+
+  // 현재가 기준 도달 여부
+  var tySignal   = hasCur && cv <= tyPrice   * 1.02 && cv >= tyPrice   * 0.95;
+  var tyBelow    = hasCur && cv <  tyPrice   * 0.95;
+  var samiSignal = hasCur && cv <= samiPrice * 1.02 && cv >= samiPrice * 0.95;
+  var samiBelow  = hasCur && cv <  samiPrice * 0.95;
+
+  // 땡큐 상태
+  var tyState = "inactive";
+  if(tyActive){ tyState = tySignal ? "signal" : tyBelow ? "below" : "waiting"; }
+
+  // 싸미 상태
+  var samiState = "inactive";
+  if(samiActive){ samiState = samiSignal ? "signal" : samiBelow ? "below" : "waiting"; }
+
+  function signalBg(state, activeColor) {
+    if(state==="signal")   return "linear-gradient(135deg,#052e16,#14532d)";
+    if(state==="waiting")  return "#0d1117";
+    if(state==="below")    return "#1a0a0a";
+    return "#0d0f14";
+  }
+  function signalBorder(state, activeColor) {
+    if(state==="signal")  return "2px solid "+activeColor+"; box-shadow:0 0 24px "+activeColor+"44;";
+    if(state==="waiting") return "1px solid "+activeColor+"44;";
+    if(state==="below")   return "1px solid #f8717166;";
+    return "1px solid #1e293b;";
+  }
+
+  // 아이콘/타이틀
+  function getIcon(state){ return state==="signal"?"🎯":state==="waiting"?"📡":state==="below"?"⬇️":"💤"; }
+  function getStateLabel(state, name, activeColor){
+    if(state==="signal")  return '<span style="color:'+activeColor+';font-size:13px;font-weight:800">'+name+' 매수 신호! 🔔</span>';
+    if(state==="waiting") return '<span style="color:'+activeColor+';font-size:12px">'+name+' 대기 중</span>';
+    if(state==="below")   return '<span style="color:#f87171;font-size:12px">'+name+' 하향 돌파</span>';
+    return '<span style="color:#475569;font-size:12px">'+name+' 비활성</span>';
+  }
+  function getPricColor(state, activeColor){ return state==="signal"?activeColor:state==="waiting"?activeColor:state==="below"?"#f87171":"#475569"; }
+  function getSubText(state, name, priceFmt, pctTxt){
+    if(state==="signal")  return "현재가 "+name+"선 도달! 매수 구간 진입";
+    if(state==="waiting") return hasCur ? "현재가 기준 "+name+"선까지 ▼"+fmt(cv - (name==="땡큐"?tyPrice:samiPrice))+"원" : "현재가 입력 시 도달 여부 표시";
+    if(state==="below")   return "이미 "+name+"선 아래 · 추가 하락 중";
+    return "상승률 "+fd(rise)+"% · "+(name==="땡큐"?"50~100%":"100% 이상")+" 종목에서 활성";
+  }
+
+  document.getElementById("tyBox_content").innerHTML =
+    '<div style="text-align:center;padding:14px 10px;border-radius:12px;background:'+signalBg(tyState)+';" style2="border:'+signalBorder(tyState,"#4ade80")+'">'+
+    '<div style="font-size:24px;margin-bottom:4px">'+getIcon(tyState)+'</div>'+
+    getStateLabel(tyState,"땡큐","#4ade80")+
+    '<div style="font-size:22px;font-weight:800;color:'+getPricColor(tyState,"#4ade80")+';margin:6px 0">'+fmt(tyPrice)+'원</div>'+
+    '<div style="font-size:9px;color:#64748b;margin-bottom:6px">고점 대비 -22%</div>'+
+    '<div style="font-size:9px;color:#94a3b8;line-height:1.5">'+getSubText(tyState,"땡큐",fmt(tyPrice),"-22%")+'</div>'+
+    '</div>';
+
+  document.getElementById("samiBox_content").innerHTML =
+    '<div style="text-align:center;padding:14px 10px;border-radius:12px;background:'+signalBg(samiState)+';">'+
+    '<div style="font-size:24px;margin-bottom:4px">'+getIcon(samiState)+'</div>'+
+    getStateLabel(samiState,"싸미","#f59e0b")+
+    '<div style="font-size:22px;font-weight:800;color:'+getPricColor(samiState,"#f59e0b")+';margin:6px 0">'+fmt(samiPrice)+'원</div>'+
+    '<div style="font-size:9px;color:#64748b;margin-bottom:6px">고점 대비 -33%</div>'+
+    '<div style="font-size:9px;color:#94a3b8;line-height:1.5">'+getSubText(samiState,"싸미",fmt(samiPrice),"-33%")+'</div>'+
+    '</div>';
+
+  tyBox.style.display = "block";
+  tyBox.classList.add("show");
+  document.getElementById("tyRiseLabel").textContent = fd(rise);
+  // 활성 박스 테두리
+  var tyWrap   = document.getElementById("tyBox_wrap");
+  var samiWrap = document.getElementById("samiBox_wrap");
+  tyWrap.style.cssText   = "flex:1;border-radius:14px;padding:3px;"+(tyState==="signal"?"background:#4ade80;box-shadow:0 0 20px #4ade8066;":tyState==="waiting"?"background:#1e293b;":"background:#1e293b;");
+  samiWrap.style.cssText = "flex:1;border-radius:14px;padding:3px;"+(samiState==="signal"?"background:#f59e0b;box-shadow:0 0 20px #f59e0b66;":samiState==="waiting"?"background:#1e293b;":"background:#1e293b;");
+  tyWrap.children[0].style.background   = tyState==="signal"?"linear-gradient(135deg,#052e16,#14532d)":"#0d1117";
+  samiWrap.children[0].style.background = samiState==="signal"?"linear-gradient(135deg,#1c1000,#2d1f00)":"#0d1117";
   if(hasCur){
     var curDrop=((hv-cv)/hv)*100;
     var toCore=cv-cPrice;
