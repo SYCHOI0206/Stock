@@ -328,10 +328,11 @@ function calc(){
 
   if(isNaN(lv)||isNaN(hv)||lv<=0||hv<=lv){alert("저점과 고점을 올바르게 입력해주세요.");return;}
 
-  var rise=((hv-lv)/hv)*100; // 고점 기준 상승률 (저점대비로 표기)
-  rise=((hv-lv)/lv)*100;
+  var rise=((hv-lv)/lv)*100;
   document.getElementById("riseValue").textContent="+"+fd(rise)+"%";
   document.getElementById("riseBox").classList.add("show");
+  document.getElementById("warnBox").style.display="none";
+  document.getElementById("warnBox").classList.remove("show");
 
   var zi=-1;
   DATA.forEach(function(r,i){
@@ -340,7 +341,11 @@ function calc(){
   });
   // 마지막 구간(101%~)은 별도 처리
   if(rise>=101) zi=DATA.length-1;
-  if(zi===-1){document.getElementById("warnBox").classList.add("show");return;}
+  if(zi===-1){
+    document.getElementById("warnBox").style.display="block";
+    document.getElementById("warnBox").classList.add("show");
+    return;
+  }
   document.getElementById("row-"+zi).classList.add("active");
   var row=DATA[zi];
 
