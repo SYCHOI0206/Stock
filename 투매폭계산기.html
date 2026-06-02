@@ -130,6 +130,8 @@ h1 { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 6px; 
 .zone-seg.seg-buy      { background: #0f2310; border-color: #4ade8055; }
 .zone-seg.seg-mean     { background: #1e1a04; border-color: #fbbf2466; }
 .zone-seg.seg-core     { background: #2d1a00; border: 2px solid #f59e0b; box-shadow: 0 0 10px #f59e0b55; }
+.zone-seg.seg-5dan1    { background: #1a1400; border: 1.5px solid #f59e0b99; }
+.zone-seg.seg-5dan2    { background: #120f00; border: 1.5px solid #f59e0b55; }
 .zone-seg.seg-cur      { background: #2e1a4a; border-color: #a78bfa66; }
 .zone-num   { font-size: 10px; color: rgba(255,255,255,0.35); min-width: 20px; }
 .zone-p     { font-size: 11px; font-weight: 700; flex: 1; }
@@ -248,6 +250,13 @@ h1 { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 6px; 
   <div style="font-size:10px;color:#475569;text-align:center;line-height:1.6" id="buyNote"></div>
 </div>
 
+<!-- 5단 매수 요약 -->
+<div class="section" id="s5dan" style="background:#0d1117;border:1px solid #f59e0b44;display:none;">
+  <div class="section-label" style="color:#f59e0b">📋 5단 매수 계획</div>
+  <div id="dan5Grid"></div>
+  <div style="font-size:10px;color:#475569;text-align:center;margin-top:10px" id="dan5Note"></div>
+</div>
+
 <!-- 현재가 -->
 <div class="section s-cur" id="sCur">
   <div class="section-label" style="color:#a78bfa">📍 현재가 위치</div>
@@ -265,6 +274,8 @@ h1 { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 6px; 
     <div class="legend-item"><div class="legend-dot" style="background:#0f2310;border:1px solid #4ade80"></div>매수구역</div>
     <div class="legend-item"><div class="legend-dot" style="background:#1e1a04;border:1px solid #fbbf24"></div>평균투매가</div>
     <div class="legend-item"><div class="legend-dot" style="background:#2d1a00;border:2px solid #f59e0b"></div>⚡핵심매수</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1a1400;border:1.5px solid #f59e0b99"></div>5단±1칸</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#120f00;border:1.5px solid #f59e0b55"></div>5단±2칸</div>
     <div class="legend-item"><div class="legend-dot" style="background:#2e1a4a;border:1px solid #a78bfa"></div>현재가</div>
     <div class="legend-item"><div class="legend-dot" style="background:#0c2a40"></div>저점</div>
   </div>
@@ -313,7 +324,7 @@ function calc(){
 
   DATA.forEach(function(_,i){document.getElementById("row-"+i).classList.remove("active");});
   ["riseBox","warnBox"].forEach(function(id){document.getElementById(id).classList.remove("show");});
-  ["sResult","sBuy","sCur","sZones"].forEach(function(id){hide(id);});
+  ["sResult","sBuy","s5dan","sCur","sZones"].forEach(function(id){hide(id);});
 
   if(isNaN(lv)||isNaN(hv)||lv<=0||hv<=lv){alert("저점과 고점을 올바르게 입력해주세요.");return;}
 
@@ -349,6 +360,11 @@ function calc(){
   // 핵심 매수포인트: 평균 투매가 최근접 구역
   var coreIdx=0,minD=Infinity;
   for(var i=0;i<=20;i++){var d=Math.abs(zones[i]-pM);if(d<minD){minD=d;coreIdx=i;}}
+
+  // 5단 매수: 핵심 기준 ±2칸
+  var dan5 = [coreIdx-2, coreIdx-1, coreIdx, coreIdx+1, coreIdx+2];
+  // 범위 벗어나면 클램프
+  dan5 = dan5.map(function(x){ return Math.max(0, Math.min(20, x)); });
 
   // 매수구역: 신뢰구간 안에 있는 모든 구역
   var buyIdxs=[];
@@ -388,6 +404,56 @@ function calc(){
     "매수구역 "+buyIdxs.length+"개 구역 포괄 | "+fmt(pL)+"원 ~ "+fmt(pH)+"원";
   show("sBuy");
 
+  // ===== 5단 매수 요약 =====
+  var dan5Labels = ["2단(▲+2)", "1단(▲+1)", "⚡핵심(0)", "3단(▼-1)", "4단(▼-2)"];
+  // dan5 배열은 [coreIdx-2, coreIdx-1, coreIdx, coreIdx+1, coreIdx+2] 순
+  // 화면에는 높은 가격(위) → 낮은 가격(아래) 순으로 표시
+  // 인덱스가 높을수록 가격이 높으므로 역순 정렬
+  var dan5sorted = dan5.slice().sort(function(a,b){return b-a;}); // 높은 인덱스 먼저
+  var dan5labelMap = {};
+  dan5labelMap[dan5[4]] = "5단 ▲+2";
+  dan5labelMap[dan5[3]] = "4단 ▲+1";
+  dan5labelMap[dan5[2]] = "⚡ 핵심 (3단)";
+  dan5labelMap[dan5[1]] = "2단 ▼-1";
+  dan5labelMap[dan5[0]] = "1단 ▼-2";
+
+  var dan5colorMap = {};
+  dan5colorMap[dan5[4]] = {bg:"#120f00", border:"#f59e0b55", price:"#d97706", badge:"#78350f", bcolor:"#fbbf24"};
+  dan5colorMap[dan5[3]] = {bg:"#1a1400", border:"#f59e0b99", price:"#f59e0b", badge:"#b45309", bcolor:"#fff"};
+  dan5colorMap[dan5[2]] = {bg:"#2d1a00", border:"#f59e0b",   price:"#f59e0b", badge:"#f59e0b", bcolor:"#0d0f14"};
+  dan5colorMap[dan5[1]] = {bg:"#1a1400", border:"#f59e0b99", price:"#f59e0b", badge:"#b45309", bcolor:"#fff"};
+  dan5colorMap[dan5[0]] = {bg:"#120f00", border:"#f59e0b55", price:"#d97706", badge:"#78350f", bcolor:"#fbbf24"};
+
+  var g5 = document.getElementById("dan5Grid");
+  g5.innerHTML = "";
+
+  // 헤더
+  var hdr = document.createElement("div");
+  hdr.style.cssText = "display:grid;grid-template-columns:90px 1fr 70px 60px;gap:4px;padding:6px 10px;font-size:10px;color:#475569;font-weight:700;margin-bottom:4px;";
+  hdr.innerHTML = "<span>단계</span><span>매수 가격</span><span style='text-align:right'>고점대비</span><span style='text-align:right'>구역</span>";
+  g5.appendChild(hdr);
+
+  dan5sorted.forEach(function(idx){
+    var zp = zones[idx];
+    var zd = ((hv-zp)/hv)*100;
+    var c  = dan5colorMap[idx];
+    var lbl= dan5labelMap[idx];
+    var isC= (idx===coreIdx);
+
+    var row = document.createElement("div");
+    row.style.cssText = "display:grid;grid-template-columns:90px 1fr 70px 60px;gap:4px;padding:9px 10px;background:"+c.bg+";border:1.5px solid "+c.border+";border-radius:8px;align-items:center;margin-bottom:3px;"+(isC?"box-shadow:0 0 10px #f59e0b44;":"");
+    row.innerHTML =
+      '<span style="font-size:11px;font-weight:700;color:'+c.price+'">'+lbl+'</span>'+
+      '<span style="font-size:15px;font-weight:800;color:'+c.price+'">'+fmt(zp)+'원</span>'+
+      '<span style="font-size:11px;color:#64748b;text-align:right">-'+fd(zd)+'%</span>'+
+      '<span style="font-size:10px;color:#475569;text-align:right">'+idx+'번</span>';
+    g5.appendChild(row);
+  });
+
+  document.getElementById("dan5Note").textContent =
+    "구간 간격 "+fmt(step)+"원 · 5단 전체 범위 "+fmt(zones[dan5[0]])+"원 ~ "+fmt(zones[dan5[4]])+"원";
+  show("s5dan");
+
   // 현재가
   var hasCur=!isNaN(cv)&&cv>0&&cv<=hv;
   if(hasCur){
@@ -417,28 +483,35 @@ function calc(){
     var isMean=(Math.abs(zp-pM)<step*0.5)&&isBuy;
     var isCur=hasCur&&(Math.abs(zp-cv)<step*0.55);
     var isTop=(i===20),isBot=(i===0);
+    var dan5dist = dan5.indexOf(i); // -1이면 5단 아님, 0~4면 5단 내
+    var is5dan1 = (dan5dist===1||dan5dist===3); // ±1칸
+    var is5dan2 = (dan5dist===0||dan5dist===4); // ±2칸
 
     var segCls="zone-seg ";
     var priceColor="#fff";
-    if(isTop)       {segCls+="seg-top";}
-    else if(isBot)  {segCls+="seg-bot";}
-    else if(isCore) {segCls+="seg-core"; priceColor="#f59e0b";}
-    else if(isCur)  {segCls+="seg-cur";  priceColor="#a78bfa";}
-    else if(isCand) {segCls+="seg-candidate"; priceColor="#38bdf8";}
-    else if(isMean) {segCls+="seg-mean"; priceColor="#fbbf24";}
-    else if(isBuy)  {segCls+="seg-buy";  priceColor="#86efac";}
-    else            {segCls+="seg-normal";}
+    if(isTop)        {segCls+="seg-top";}
+    else if(isBot)   {segCls+="seg-bot";}
+    else if(isCore)  {segCls+="seg-core"; priceColor="#f59e0b";}
+    else if(isCur)   {segCls+="seg-cur";  priceColor="#a78bfa";}
+    else if(isCand)  {segCls+="seg-candidate"; priceColor="#38bdf8";}
+    else if(isMean)  {segCls+="seg-mean"; priceColor="#fbbf24";}
+    else if(isBuy)   {segCls+="seg-buy";  priceColor="#86efac";}
+    else if(is5dan1) {segCls+="seg-5dan1"; priceColor="#f59e0b";}
+    else if(is5dan2) {segCls+="seg-5dan2"; priceColor="#d97706";}
+    else             {segCls+="seg-normal";}
 
     var seg=document.createElement("div"); seg.className=segCls;
 
     var badge="", badgeBg="", badgeColor="#0d0f14";
-    if(isTop)       {badge="고점";      badgeBg="#f87171";}
-    else if(isBot)  {badge="저점";      badgeBg="#38bdf8";}
-    else if(isCore) {badge="⚡핵심매수"; badgeBg="#f59e0b";}
-    else if(isCur)  {badge="현재가";    badgeBg="#a78bfa";}
-    else if(isCand) {badge="후보군";    badgeBg="#38bdf8";}
-    else if(isMean) {badge="평균투매가"; badgeBg="#fbbf24";}
-    else if(isBuy)  {badge="매수";      badgeBg="#4ade80";}
+    if(isTop)        {badge="고점";        badgeBg="#f87171";}
+    else if(isBot)   {badge="저점";        badgeBg="#38bdf8";}
+    else if(isCore)  {badge="⚡핵심매수";   badgeBg="#f59e0b";}
+    else if(isCur)   {badge="현재가";      badgeBg="#a78bfa";}
+    else if(isCand)  {badge="후보군";      badgeBg="#38bdf8";}
+    else if(isMean)  {badge="평균투매가";   badgeBg="#fbbf24";}
+    else if(isBuy)   {badge="매수";        badgeBg="#4ade80";}
+    else if(is5dan1) {badge="5단 "+(i>coreIdx?"▲+1":"▼-1"); badgeBg="#b45309"; badgeColor="#fff";}
+    else if(is5dan2) {badge="5단 "+(i>coreIdx?"▲+2":"▼-2"); badgeBg="#78350f"; badgeColor="#fbbf24";}
 
     seg.innerHTML=
       '<span class="zone-num">'+(isTop?"▲":isBot?"▼":i)+'</span>'+
