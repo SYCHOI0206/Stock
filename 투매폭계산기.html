@@ -294,14 +294,14 @@ h1 { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 6px; 
 
 <script>
 var DATA=[
-  {label:"20~30%", mean:12.6,sd:3.58,low:11.785,high:13.42, range:"10~15%",minP:20,maxP:30},
-  {label:"31~40%", mean:16.2,sd:4.39,low:15.255,high:17.15, range:"14~18%",minP:31,maxP:40},
-  {label:"41~50%", mean:19.5,sd:4.70,low:18.565,high:20.43, range:"15~21%",minP:41,maxP:50},
-  {label:"51~60%", mean:21.6,sd:4.74,low:20.665,high:22.53, range:"18~24%",minP:51,maxP:60},
-  {label:"61~70%", mean:23.6,sd:4.78,low:22.575,high:24.63, range:"20~25%",minP:61,maxP:70},
-  {label:"71~80%", mean:23.4,sd:5.23,low:21.455,high:25.35, range:"21~24%",minP:71,maxP:80},
-  {label:"81~90%", mean:26.3,sd:6.57,low:23.855,high:28.75, range:"24~27%",minP:81,maxP:90},
-  {label:"91~100%",mean:26.7,sd:5.95,low:24.025,high:29.37, range:"25~28%",minP:91,maxP:100},
+  {label:"20~30%", mean:12.6,sd:3.58,low:11.785,high:13.42, range:"10~15%",minP:20,maxP:30.99},
+  {label:"31~40%", mean:16.2,sd:4.39,low:15.255,high:17.15, range:"14~18%",minP:31,maxP:40.99},
+  {label:"41~50%", mean:19.5,sd:4.70,low:18.565,high:20.43, range:"15~21%",minP:41,maxP:50.99},
+  {label:"51~60%", mean:21.6,sd:4.74,low:20.665,high:22.53, range:"18~24%",minP:51,maxP:60.99},
+  {label:"61~70%", mean:23.6,sd:4.78,low:22.575,high:24.63, range:"20~25%",minP:61,maxP:70.99},
+  {label:"71~80%", mean:23.4,sd:5.23,low:21.455,high:25.35, range:"21~24%",minP:71,maxP:80.99},
+  {label:"81~90%", mean:26.3,sd:6.57,low:23.855,high:28.75, range:"24~27%",minP:81,maxP:90.99},
+  {label:"91~100%",mean:26.7,sd:5.95,low:24.025,high:29.37, range:"25~28%",minP:91,maxP:100.99},
   {label:"101%~",  mean:31.4,sd:8.90,low:29.335,high:33.46, range:"28~34%",minP:101,maxP:9999}
 ];
 
@@ -334,7 +334,12 @@ function calc(){
   document.getElementById("riseBox").classList.add("show");
 
   var zi=-1;
-  DATA.forEach(function(r,i){if(rise>=r.minP&&rise<=r.maxP)zi=i;});
+  DATA.forEach(function(r,i){
+    var nextMin = (i < DATA.length-1) ? DATA[i+1].minP : Infinity;
+    if(rise>=r.minP && rise<nextMin) zi=i;
+  });
+  // 마지막 구간(101%~)은 별도 처리
+  if(rise>=101) zi=DATA.length-1;
   if(zi===-1){document.getElementById("warnBox").classList.add("show");return;}
   document.getElementById("row-"+zi).classList.add("active");
   var row=DATA[zi];
