@@ -195,6 +195,9 @@ h1 { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 6px; 
 .zone-seg.seg-buy      { background: #0f2310; border-color: #4ade8055; }
 .zone-seg.seg-mean     { background: #1e1a04; border-color: #fbbf2466; }
 .zone-seg.seg-core     { background: #2d1a00; border: 2px solid #f59e0b; box-shadow: 0 0 10px #f59e0b55; }
+.zone-seg.seg-sell2    { background: #3f0f0f; border: 2px solid #f87171; }
+.zone-seg.seg-sell1    { background: #2a0f0f; border: 1.5px solid #fca5a566; }
+.zone-seg.seg-sell2low { background: #0c1a2a; border: 1.5px solid #7dd3fc66; }
 .zone-seg.seg-5dan1    { background: #1a1400; border: 1.5px solid #f59e0b99; }
 .zone-seg.seg-5dan2    { background: #120f00; border: 1.5px solid #f59e0b55; }
 .zone-seg.seg-cur      { background: #2e1a4a; border-color: #a78bfa66; }
@@ -313,6 +316,9 @@ h1 { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 6px; 
   <div id="zonesBar"></div>
   <div class="legend-wrap">
     <div class="legend-item"><div class="legend-dot" style="background:#7f1d1d"></div>고점</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#3f0f0f;border:2px solid #f87171"></div>매도2</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#2a0f0f;border:1px solid #fca5a5"></div>매도1</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#0c1a2a;border:1px solid #7dd3fc"></div>▼10칸저점</div>
     <div class="legend-item"><div class="legend-dot" style="background:#0d1e30;border:1px solid #38bdf8"></div>후보군</div>
     <div class="legend-item"><div class="legend-dot" style="background:#0f2310;border:1px solid #4ade80"></div>매수구역</div>
     <div class="legend-item"><div class="legend-dot" style="background:#1e1a04;border:1px solid #fbbf24"></div>평균투매가</div>
@@ -563,6 +569,11 @@ function calc(){
     "구간 간격 "+fmt(step)+"원  |  저점 "+fmt(lv)+"원 ~ 고점 "+fmt(hv)+"원";
   var zbar=document.getElementById("zonesBar"); zbar.innerHTML="";
 
+  // 매도2, 매도1, 매도2-10칸 인덱스
+  var sell2Idx = Math.min(20, dan5[0]+2);
+  var sell1Idx = Math.min(20, dan5[0]+1);
+  var sell2LowIdx = Math.max(0, sell2Idx - 10);
+
   for(var i=20;i>=0;i--){
     var zp=zones[i];
     var zd=((hv-zp)/hv)*100;
@@ -572,36 +583,45 @@ function calc(){
     var isMean=(Math.abs(zp-pM)<step*0.5)&&isBuy;
     var isCur=hasCur&&(Math.abs(zp-cv)<step*0.55);
     var isTop=(i===20),isBot=(i===0);
-    var dan5rank = dan5.indexOf(i); // 0=1단,1=2단,...,4=5단, -1=해당없음
+    var dan5rank = dan5.indexOf(i);
     var isBotZone=(i===botIdx);
     var is5dan = (dan5rank>=0);
     var is5danNotCore = is5dan && (i!==coreIdx);
+    var isSell2    = (i===sell2Idx);
+    var isSell1    = (i===sell1Idx);
+    var isSell2Low = (i===sell2LowIdx);
 
     var segCls="zone-seg ";
     var priceColor="#fff";
     if(isTop)             {segCls+="seg-top";}
     else if(isBot)        {segCls+="seg-bot";}
-    else if(isCore)       {segCls+="seg-core";      priceColor="#f59e0b";}
-    else if(isCur)        {segCls+="seg-cur";        priceColor="#a78bfa";}
-    else if(isCand)       {segCls+="seg-candidate";  priceColor="#38bdf8";}
-    else if(isMean)       {segCls+="seg-mean";        priceColor="#fbbf24";}
-    else if(isBuy)        {segCls+="seg-buy";         priceColor="#86efac";}
-    else if(is5danNotCore){segCls+="seg-5dan1";       priceColor="#f59e0b";}
-    else if(isBotZone)    {segCls+="seg-5dan2";       priceColor="#f87171";}
+    else if(isSell2)      {segCls+="seg-sell2";      priceColor="#f87171";}
+    else if(isSell1)      {segCls+="seg-sell1";      priceColor="#fca5a5";}
+    else if(isSell2Low)   {segCls+="seg-sell2low";   priceColor="#7dd3fc";}
+    else if(isCore)       {segCls+="seg-core";        priceColor="#f59e0b";}
+    else if(isCur)        {segCls+="seg-cur";          priceColor="#a78bfa";}
+    else if(isCand)       {segCls+="seg-candidate";    priceColor="#38bdf8";}
+    else if(isMean)       {segCls+="seg-mean";          priceColor="#fbbf24";}
+    else if(isBuy)        {segCls+="seg-buy";           priceColor="#86efac";}
+    else if(is5danNotCore){segCls+="seg-5dan1";         priceColor="#f59e0b";}
+    else if(isBotZone)    {segCls+="seg-5dan2";         priceColor="#f87171";}
     else                  {segCls+="seg-normal";}
 
     var seg=document.createElement("div"); seg.className=segCls;
 
     var badge="", badgeBg="", badgeColor="#0d0f14";
-    if(isTop)             {badge="고점";                        badgeBg="#f87171";}
-    else if(isBot)        {badge="저점";                        badgeBg="#38bdf8";}
-    else if(isCore)       {badge="⚡핵심매수";                   badgeBg="#f59e0b";}
-    else if(isCur)        {badge="현재가";                      badgeBg="#a78bfa";}
-    else if(isCand)       {badge="후보군";                      badgeBg="#38bdf8";}
-    else if(isMean)       {badge="평균투매가";                   badgeBg="#fbbf24";}
-    else if(isBuy)        {badge="매수";                        badgeBg="#4ade80";}
+    if(isTop)             {badge="고점";           badgeBg="#f87171";}
+    else if(isBot)        {badge="저점";           badgeBg="#38bdf8";}
+    else if(isSell2)      {badge="매도2";          badgeBg="#f87171";}
+    else if(isSell1)      {badge="매도1";          badgeBg="#fca5a5";}
+    else if(isSell2Low)   {badge="▼10칸 저점";    badgeBg="#7dd3fc";}
+    else if(isCore)       {badge="⚡핵심매수";      badgeBg="#f59e0b";}
+    else if(isCur)        {badge="현재가";         badgeBg="#a78bfa";}
+    else if(isCand)       {badge="후보군";         badgeBg="#38bdf8";}
+    else if(isMean)       {badge="평균투매가";      badgeBg="#fbbf24";}
+    else if(isBuy)        {badge="매수";           badgeBg="#4ade80";}
     else if(is5danNotCore){badge=(dan5rank+1)+"단"; badgeBg="#b45309"; badgeColor="#fff";}
-    else if(isBotZone)    {badge="신뢰구간 하단"; badgeBg="#f87171";}
+    else if(isBotZone)    {badge="신뢰구간 하단";   badgeBg="#f87171";}
 
     seg.innerHTML=
       '<span class="zone-num">'+(isTop?"▲":isBot?"▼":i)+'</span>'+
@@ -627,13 +647,14 @@ function calc(){
     rise: rise, zone: row.label,
     core: cPrice,
     ty: tyPrice, sami: samiPrice,
-    pre2: zones[Math.min(20, dan5[0]+2)],  // 1단 위 2칸
-    pre1: zones[Math.min(20, dan5[0]+1)],  // 1단 위 1칸
+    pre2: zones[Math.min(20, dan5[0]+2)],  // 매도2
+    pre1: zones[Math.min(20, dan5[0]+1)],  // 매도1
     d1: zones[dan5[0]],
     d2: zones[dan5[1]],
     d3: zones[dan5[2]],
     d4: zones[dan5[3]],
-    d5: zones[dan5[4]]
+    d5: zones[dan5[4]],
+    sell2low: zones[Math.max(0, Math.min(20, dan5[0]+2) - 10)]  // 매도2에서 10칸 아래
   });
   if(histData.length>30) histData.pop();
   renderHistory();
@@ -681,7 +702,9 @@ function renderHistory(){
       '<div class="hist-row"><span class="hist-row-label">2단매수</span><span class="hist-row-val" style="color:#4ade80">'+fmt(h.d2)+'원</span></div>'+
       '<div class="hist-row"><span class="hist-row-label">3단매수</span><span class="hist-row-val" style="color:#4ade80">'+fmt(h.d3)+'원</span></div>'+
       '<div class="hist-row"><span class="hist-row-label">4단매수</span><span class="hist-row-val" style="color:#22c55e">'+fmt(h.d4)+'원</span></div>'+
-      '<div class="hist-row"><span class="hist-row-label">5단매수</span><span class="hist-row-val" style="color:#16a34a">'+fmt(h.d5)+'원</span></div>';
+      '<div class="hist-row"><span class="hist-row-label">5단매수</span><span class="hist-row-val" style="color:#16a34a">'+fmt(h.d5)+'원</span></div>'+
+      '<div style="height:1px;background:#1e293b;margin:5px 0"></div>'+
+      '<div class="hist-row"><span class="hist-row-label" style="color:#7dd3fc">▼10칸(저점)</span><span class="hist-row-val" style="color:#7dd3fc">'+fmt(h.sell2low)+'원</span></div>';
     wrap.appendChild(div);
   });
 }
