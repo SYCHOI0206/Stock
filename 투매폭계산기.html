@@ -10,37 +10,24 @@ body {
   background: #0d0f14;
   font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 30px 16px 60px;
-  color: #f1f5f9;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 30px 16px 60px; color: #f1f5f9;
 }
 .subtitle { font-size: 11px; letter-spacing: 4px; color: #4ade80; margin-bottom: 8px; text-align: center; }
 h1 { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 6px; }
 .desc { font-size: 12px; color: #64748b; text-align: center; margin-bottom: 24px; }
 
 .card {
-  background: #161b24;
-  border: 1px solid #1e293b;
-  border-radius: 16px;
-  padding: 20px;
-  width: 100%;
-  max-width: 480px;
-  margin-bottom: 16px;
+  background: #161b24; border: 1px solid #1e293b; border-radius: 16px;
+  padding: 20px; width: 100%; max-width: 480px; margin-bottom: 16px;
 }
 .input-row { display: flex; gap: 12px; margin-bottom: 14px; }
 .input-group { flex: 1; }
 .input-label { font-size: 11px; color: #64748b; margin-bottom: 6px; }
 .input-group input {
-  width: 100%;
-  background: #0d0f14;
-  border-radius: 10px;
-  padding: 12px 14px;
-  font-size: 20px;
-  font-weight: 700;
-  font-family: inherit;
-  outline: none;
+  width: 100%; background: #0d0f14; border-radius: 10px;
+  padding: 12px 14px; font-size: 20px; font-weight: 700;
+  font-family: inherit; outline: none;
 }
 #lowInput  { border: 2px solid #38bdf8; color: #38bdf8; }
 #highInput { border: 2px solid #f87171; color: #f87171; }
@@ -48,30 +35,16 @@ h1 { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 6px; 
 .cur-row { margin-bottom: 14px; }
 .cur-label { font-size: 11px; color: #64748b; margin-bottom: 6px; }
 .cur-label span { color: #a78bfa; }
-
 .btn {
-  width: 100%;
-  padding: 14px;
-  background: #4ade80;
-  color: #0d0f14;
-  font-size: 16px;
-  font-weight: 800;
-  font-family: inherit;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
+  width: 100%; padding: 14px; background: #4ade80; color: #0d0f14;
+  font-size: 16px; font-weight: 800; font-family: inherit;
+  border: none; border-radius: 10px; cursor: pointer;
 }
 .btn:active { background: #22c55e; }
-
 .rise-box {
-  margin-top: 14px;
-  background: #0d0f14;
-  border: 1px solid #1e293b;
-  border-radius: 10px;
-  padding: 12px 16px;
-  display: none;
-  justify-content: space-between;
-  align-items: center;
+  margin-top: 14px; background: #0d0f14; border: 1px solid #1e293b;
+  border-radius: 10px; padding: 12px 16px; display: none;
+  justify-content: space-between; align-items: center;
 }
 .rise-box.show { display: flex; }
 .rise-label { font-size: 13px; color: #94a3b8; }
@@ -79,191 +52,126 @@ h1 { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 6px; 
 .warn { margin-top: 12px; font-size: 13px; color: #f87171; text-align: center; display: none; }
 .warn.show { display: block; }
 
-/* 결과 요약 */
-.result-box {
-  width: 100%;
-  max-width: 480px;
-  background: #0f1e12;
-  border: 1px solid #166534;
-  border-radius: 16px;
-  padding: 18px 20px;
-  display: none;
-  margin-bottom: 16px;
+/* 섹션 공통 */
+.section {
+  width: 100%; max-width: 480px; border-radius: 16px;
+  padding: 18px 20px; display: none; margin-bottom: 16px;
 }
-.result-box.show { display: block; }
-.result-title { font-size: 11px; color: #4ade80; letter-spacing: 1px; margin-bottom: 12px; }
-.result-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-.result-item {
-  background: #0d0f14;
-  border-radius: 10px;
-  padding: 12px 6px;
-  text-align: center;
-}
-.result-item-label { font-size: 9px; color: #64748b; margin-bottom: 6px; line-height: 1.5; }
-.result-item-price { font-size: 14px; font-weight: 800; }
-.result-note { font-size: 10px; color: #475569; text-align: center; margin-bottom: 0; }
+.section.show { display: block; }
+.section-label { font-size: 10px; letter-spacing: 3px; margin-bottom: 12px; font-weight: 700; }
 
-/* 현재가 위치 */
-.cur-position {
-  width: 100%;
-  max-width: 480px;
-  background: #1a1230;
-  border: 1px solid #7c3aed44;
-  border-radius: 16px;
-  padding: 14px 18px;
-  display: none;
-  margin-bottom: 16px;
-}
-.cur-position.show { display: block; }
-.cur-pos-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-.cur-pos-row:last-child { margin-bottom: 0; }
-.cur-pos-label { font-size: 11px; color: #94a3b8; }
-.cur-pos-value { font-size: 14px; font-weight: 800; }
+/* 투매 예상 */
+.s-result { background: #0f1e12; border: 1px solid #166534; }
+.result-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+.result-item { background: #0d0f14; border-radius: 10px; padding: 12px 6px; text-align: center; }
+.ri-label { font-size: 9px; color: #64748b; margin-bottom: 5px; line-height: 1.5; }
+.ri-price { font-size: 14px; font-weight: 800; }
+.result-note { font-size: 10px; color: #475569; text-align: center; }
 
-/* ===================== 20등분 시각화 ===================== */
-.zones-card {
-  width: 100%;
-  max-width: 480px;
-  background: #161b24;
-  border: 1px solid #1e293b;
-  border-radius: 16px;
-  padding: 18px 16px;
-  display: none;
-  margin-bottom: 16px;
-}
-.zones-card.show { display: block; }
-.zones-card-title { font-size: 11px; color: #4ade80; letter-spacing: 2px; margin-bottom: 4px; }
-.zones-card-sub { font-size: 10px; color: #475569; margin-bottom: 16px; }
+/* 매수 범위 카드 */
+.s-buy { background: #0d1117; border: 1px solid #1e293b; }
 
-/* 세로 가격 바 */
-.price-bar-wrap {
-  display: flex;
-  gap: 10px;
-  align-items: stretch;
+/* 핵심 매수포인트 */
+.core-box {
+  background: linear-gradient(135deg, #1c1000, #2d1f00);
+  border: 2px solid #f59e0b; border-radius: 14px;
+  padding: 16px 20px; margin-bottom: 14px;
+  box-shadow: 0 0 24px #f59e0b44;
+  display: flex; justify-content: space-between; align-items: center;
 }
-.price-bar-col {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  flex: 1;
+.core-left {}
+.core-tag { font-size: 10px; color: #f59e0b; letter-spacing: 2px; margin-bottom: 4px; }
+.core-price { font-size: 28px; font-weight: 800; color: #f59e0b; }
+.core-sub { font-size: 10px; color: #94a3b8; margin-top: 3px; }
+.core-right { text-align: right; }
+.core-zone { font-size: 11px; color: #f59e0b; font-weight: 700; }
+.core-drop { font-size: 20px; font-weight: 800; color: #f59e0b; }
+
+/* 신뢰구간 범위 표시 */
+.ci-range-box {
+  background: #0f2310; border: 1px solid #166534;
+  border-radius: 12px; padding: 14px 16px; margin-bottom: 10px;
 }
-.price-label-col {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 0;
-  min-width: 56px;
+.ci-range-title { font-size: 10px; color: #4ade80; letter-spacing: 2px; margin-bottom: 10px; }
+.ci-info-sub { font-size: 9px; color: #475569; margin-top: 2px; }
+
+/* 후보군 */
+.candidate-box {
+  background: #0d1e30; border: 1px solid #38bdf833;
+  border-radius: 10px; padding: 10px 14px;
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 10px;
 }
-.zone-segment {
-  position: relative;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  border-radius: 4px;
-  margin-bottom: 2px;
-  padding: 0 8px;
-  cursor: default;
-  transition: filter 0.15s;
+.cand-label { font-size: 11px; color: #38bdf8; }
+.cand-sub   { font-size: 9px;  color: #475569; margin-top: 2px; }
+.cand-price { font-size: 16px; font-weight: 800; color: #38bdf8; }
+.cand-drop  { font-size: 10px; color: #475569; text-align: right; margin-top: 2px; }
+
+/* 현재가 */
+.s-cur { background: #1a1230; border: 1px solid #7c3aed44; }
+.cur-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.cur-item { background: #0d0f14; border-radius: 8px; padding: 10px 12px; }
+.cur-item-label { font-size: 9px; color: #475569; margin-bottom: 4px; }
+.cur-item-value { font-size: 14px; font-weight: 800; }
+
+/* 20등분 시각화 */
+.s-zones { background: #161b24; border: 1px solid #1e293b; padding: 18px 16px; }
+.zones-sub { font-size: 10px; color: #475569; margin-bottom: 14px; }
+.zone-seg {
+  height: 28px; display: flex; align-items: center;
+  border-radius: 5px; margin-bottom: 2px; padding: 0 10px;
+  border: 1.5px solid transparent; transition: filter 0.15s;
 }
-.zone-segment:hover { filter: brightness(1.3); }
-.zone-num { font-size: 10px; color: rgba(255,255,255,0.5); min-width: 18px; }
-.zone-price { font-size: 11px; font-weight: 700; color: #fff; flex: 1; text-align: right; }
-.zone-badge {
-  font-size: 9px;
-  font-weight: 800;
-  padding: 2px 5px;
-  border-radius: 4px;
-  margin-left: 6px;
-  white-space: nowrap;
+.zone-seg:hover { filter: brightness(1.3); }
+.zone-seg.seg-top      { background: #7f1d1d; }
+.zone-seg.seg-bot      { background: #0c2a40; }
+.zone-seg.seg-normal   { background: #161b24; }
+.zone-seg.seg-candidate{ background: #0d1e30; border-color: #38bdf844; }
+.zone-seg.seg-buy      { background: #0f2310; border-color: #4ade8055; }
+.zone-seg.seg-mean     { background: #1e1a04; border-color: #fbbf2466; }
+.zone-seg.seg-core     { background: #2d1a00; border: 2px solid #f59e0b; box-shadow: 0 0 10px #f59e0b55; }
+.zone-seg.seg-cur      { background: #2e1a4a; border-color: #a78bfa66; }
+.zone-num   { font-size: 10px; color: rgba(255,255,255,0.35); min-width: 20px; }
+.zone-p     { font-size: 11px; font-weight: 700; flex: 1; }
+.zone-d     { font-size: 9px; color: #475569; white-space: nowrap; margin-left: 4px; }
+.zone-bdg   {
+  font-size: 9px; font-weight: 800; padding: 1px 6px;
+  border-radius: 4px; margin-left: 5px; white-space: nowrap; color: #0d0f14;
 }
 
-/* 범례 */
-.legend-wrap { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
-.legend-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: #94a3b8; }
-.legend-dot { width: 10px; height: 10px; border-radius: 3px; }
-
-/* 하락폭 테이블 */
-.drop-table {
-  width: 100%;
-  max-width: 480px;
-  background: #161b24;
-  border: 1px solid #1e293b;
-  border-radius: 16px;
-  overflow: hidden;
-  margin-bottom: 16px;
-  display: none;
-}
-.drop-table.show { display: block; }
-.drop-table-title { background: #1e293b; padding: 10px 14px; font-size: 11px; color: #94a3b8; letter-spacing: 1px; }
-.drop-head {
-  display: grid;
-  grid-template-columns: 58px 1fr 1fr 1fr;
-  padding: 8px 14px;
-  background: #131820;
-  gap: 4px;
-}
-.drop-head span { font-size: 10px; color: #475569; font-weight: 700; }
-.drop-row {
-  display: grid;
-  grid-template-columns: 58px 1fr 1fr 1fr;
-  padding: 9px 14px;
-  gap: 4px;
-  align-items: center;
-  border-left: 3px solid transparent;
-}
-.drop-row:nth-child(odd)  { background: #161b24; }
-.drop-row:nth-child(even) { background: #131820; }
-.drop-row.zone-row { border-left-color: #4ade80; background: #1a2e1a !important; }
-.drop-row.cur-row-hl { border-left-color: #a78bfa; background: #1a1230 !important; }
-.drop-col-pct   { font-size: 12px; color: #94a3b8; }
-.drop-col-price { font-size: 13px; font-weight: 700; color: #e2e8f0; }
-.drop-col-note  { font-size: 10px; color: #475569; }
+.legend-wrap { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.legend-item { display: flex; align-items: center; gap: 4px; font-size: 10px; color: #94a3b8; }
+.legend-dot  { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
 
 /* 표2 */
 .table-wrap {
-  width: 100%;
-  max-width: 480px;
-  background: #161b24;
-  border: 1px solid #1e293b;
-  border-radius: 16px;
-  overflow: hidden;
-  margin-bottom: 16px;
+  width: 100%; max-width: 480px; background: #161b24;
+  border: 1px solid #1e293b; border-radius: 16px; overflow: hidden; margin-bottom: 16px;
 }
 .table-head {
-  display: grid;
-  grid-template-columns: 80px 72px 56px 1fr 64px;
-  background: #1e293b;
-  padding: 10px 12px;
-  gap: 4px;
+  display: grid; grid-template-columns: 80px 72px 56px 1fr 64px;
+  background: #1e293b; padding: 10px 12px; gap: 4px;
 }
 .table-head span { font-size: 10px; color: #64748b; font-weight: 700; }
-.table-row {
-  display: grid;
-  grid-template-columns: 80px 72px 56px 1fr 64px;
-  padding: 11px 12px;
-  gap: 4px;
-  align-items: center;
-  border-left: 3px solid transparent;
+.trow {
+  display: grid; grid-template-columns: 80px 72px 56px 1fr 64px;
+  padding: 10px 12px; gap: 4px; align-items: center; border-left: 3px solid transparent;
 }
-.table-row:nth-child(odd)  { background: #161b24; }
-.table-row:nth-child(even) { background: #131820; }
-.table-row.active { background: #1a2e1a !important; border-left-color: #4ade80; }
-.col-zone  { font-size: 12px; color: #94a3b8; }
-.col-mean  { font-size: 13px; font-weight: 700; color: #e2e8f0; }
-.col-sd    { font-size: 12px; color: #475569; }
-.col-ci    { font-size: 10px; color: #475569; line-height: 1.6; }
-.col-range { font-size: 10px; color: #475569; }
-.table-row.active .col-zone  { color: #4ade80; font-weight: 800; }
-.table-row.active .col-mean  { color: #fbbf24; }
-.table-row.active .col-ci    { color: #7dd3fc; }
-.table-row.active .col-range { color: #c084fc; }
+.trow:nth-child(odd)  { background: #161b24; }
+.trow:nth-child(even) { background: #131820; }
+.trow.active { background: #1a2e1a !important; border-left-color: #4ade80; }
+.tc1 { font-size: 12px; color: #94a3b8; }
+.tc2 { font-size: 13px; font-weight: 700; color: #e2e8f0; }
+.tc3 { font-size: 12px; color: #475569; }
+.tc4 { font-size: 10px; color: #475569; line-height: 1.6; }
+.tc5 { font-size: 10px; color: #475569; }
+.trow.active .tc1 { color: #4ade80; font-weight: 800; }
+.trow.active .tc2 { color: #fbbf24; }
+.trow.active .tc4 { color: #7dd3fc; }
+.trow.active .tc5 { color: #c084fc; }
 .table-foot {
-  padding: 10px 12px;
-  background: #0d0f14;
-  border-top: 1px solid #1e293b;
-  font-size: 10px;
-  color: #475569;
-  line-height: 1.7;
+  padding: 10px 12px; background: #0d0f14;
+  border-top: 1px solid #1e293b; font-size: 10px; color: #475569; line-height: 1.7;
 }
 </style>
 </head>
@@ -271,19 +179,15 @@ h1 { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 6px; 
 
 <div class="subtitle">DATA-DRIVEN ANALYSIS</div>
 <h1>투매폭 계산기</h1>
-<p class="desc">저점 · 고점 입력 → 계산하기 → 투매폭 & 20등분 구역 확인</p>
+<p class="desc">저점 · 고점 입력 → 투매폭 & 매수 구역 자동 분석</p>
 
 <!-- 입력 -->
 <div class="card">
   <div class="input-row">
-    <div class="input-group">
-      <div class="input-label">저점 (₩)</div>
-      <input id="lowInput" type="number" placeholder="예) 47550"/>
-    </div>
-    <div class="input-group">
-      <div class="input-label">고점 (₩)</div>
-      <input id="highInput" type="number" placeholder="예) 67300"/>
-    </div>
+    <div class="input-group"><div class="input-label">저점 (₩)</div>
+      <input id="lowInput" type="number" placeholder="예) 47550"/></div>
+    <div class="input-group"><div class="input-label">고점 (₩)</div>
+      <input id="highInput" type="number" placeholder="예) 67300"/></div>
   </div>
   <div class="cur-row">
     <div class="cur-label">현재가 (₩) <span>· 선택입력</span></div>
@@ -297,52 +201,73 @@ h1 { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 6px; 
   <div class="warn" id="warnBox">⚠ 상승률 20% 미만은 표2 범위 밖입니다</div>
 </div>
 
-<!-- 결과 요약 -->
-<div class="result-box" id="resultBox">
-  <div class="result-title" id="resultTitle"></div>
+<!-- 투매 예상 -->
+<div class="section s-result" id="sResult">
+  <div class="section-label" style="color:#4ade80">📊 예상 투매 가격대</div>
   <div class="result-grid" id="resultGrid"></div>
   <div class="result-note" id="resultNote"></div>
 </div>
 
-<!-- 현재가 위치 -->
-<div class="cur-position" id="curPosition">
-  <div class="cur-pos-row">
-    <span class="cur-pos-label">현재가</span>
-    <span class="cur-pos-value" id="curPriceLabel" style="color:#a78bfa"></span>
+<!-- 매수 구역 -->
+<div class="section s-buy" id="sBuy">
+  <div class="section-label" style="color:#f59e0b">🎯 매수 분석</div>
+
+  <!-- 핵심 매수포인트 -->
+  <div class="core-box">
+    <div class="core-left">
+      <div class="core-tag">⚡ 핵심 매수포인트</div>
+      <div class="core-price" id="corePrice"></div>
+      <div class="core-sub" id="coreSub"></div>
+    </div>
+    <div class="core-right">
+      <div class="core-zone" id="coreZone"></div>
+      <div class="core-drop" id="coreDrop"></div>
+      <div style="font-size:9px;color:#94a3b8">고점 대비 하락</div>
+    </div>
   </div>
-  <div class="cur-pos-row">
-    <span class="cur-pos-label">고점 대비 하락</span>
-    <span class="cur-pos-value" id="curDropPct" style="color:#f87171"></span>
+
+  <!-- 후보군 -->
+  <div class="candidate-box" id="candidateBox">
+    <div>
+      <div class="cand-label">🔵 매수 후보군 (신뢰구간 진입 직전)</div>
+      <div class="cand-sub" id="candSub"></div>
+    </div>
+    <div>
+      <div class="cand-price" id="candPrice"></div>
+      <div class="cand-drop" id="candDrop"></div>
+    </div>
   </div>
-  <div class="cur-pos-row">
-    <span class="cur-pos-label">평균 투매가까지</span>
-    <span class="cur-pos-value" id="curToMean" style="color:#fbbf24"></span>
+
+  <!-- 신뢰구간 범위 -->
+  <div class="ci-range-box">
+    <div class="ci-range-title">📐 매수 구역 범위 (99% 신뢰구간)</div>
+
+    <div class="ci-info-grid" id="ciInfoGrid"></div>
   </div>
+
+  <div style="font-size:10px;color:#475569;text-align:center;line-height:1.6" id="buyNote"></div>
+</div>
+
+<!-- 현재가 -->
+<div class="section s-cur" id="sCur">
+  <div class="section-label" style="color:#a78bfa">📍 현재가 위치</div>
+  <div class="cur-grid" id="curGrid"></div>
 </div>
 
 <!-- 20등분 시각화 -->
-<div class="zones-card" id="zonesCard">
-  <div class="zones-card-title">📐 저점~고점 20등분 구역</div>
-  <div class="zones-card-sub" id="zonesSub"></div>
-  <div class="price-bar-wrap">
-    <div class="price-bar-col" id="zonesBar"></div>
-  </div>
+<div class="section s-zones" id="sZones">
+  <div class="section-label" style="color:#4ade80">📐 저점~고점 20등분 구역</div>
+  <div class="zones-sub" id="zonesSub"></div>
+  <div id="zonesBar"></div>
   <div class="legend-wrap">
-    <div class="legend-item"><div class="legend-dot" style="background:#f87171"></div>고점</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>투매 평균가 구역</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#4ade80"></div>신뢰구간 내 구역</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#38bdf8"></div>저점</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#a78bfa"></div>현재가 구역</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#7f1d1d"></div>고점</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#0d1e30;border:1px solid #38bdf8"></div>후보군</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#0f2310;border:1px solid #4ade80"></div>매수구역</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1e1a04;border:1px solid #fbbf24"></div>평균투매가</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#2d1a00;border:2px solid #f59e0b"></div>⚡핵심매수</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#2e1a4a;border:1px solid #a78bfa"></div>현재가</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#0c2a40"></div>저점</div>
   </div>
-</div>
-
-<!-- 하락폭 테이블 -->
-<div class="drop-table" id="dropTable">
-  <div class="drop-table-title">📉 고점 대비 5% 단위 하락폭 가격표</div>
-  <div class="drop-head">
-    <span>하락폭</span><span>예상 가격</span><span>하락금액</span><span>비고</span>
-  </div>
-  <div id="dropBody"></div>
 </div>
 
 <!-- 표2 -->
@@ -352,229 +277,176 @@ h1 { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 6px; 
   </div>
   <div id="tableBody"></div>
   <div class="table-foot">
-    신뢰구간: X̄ ± 2.58×(s/√n) | 99% 신뢰수준<br/>
-    출처: 태쏘의 데이트레이딩 바이블 2 [표 2]
+    신뢰구간: X̄ ± 2.58×(s/√n) | 99% 신뢰수준<br/>출처: 태쏘의 데이트레이딩 바이블 2 [표 2]
   </div>
 </div>
 
 <script>
-var DATA = [
-  { label:"20~30%",  mean:12.6, sd:3.58, low:11.785, high:13.42,  range:"10~15%",  minP:20, maxP:30 },
-  { label:"31~40%",  mean:16.2, sd:4.39, low:15.255, high:17.15,  range:"14~18%",  minP:31, maxP:40 },
-  { label:"41~50%",  mean:19.5, sd:4.70, low:18.565, high:20.43,  range:"15~21%",  minP:41, maxP:50 },
-  { label:"51~60%",  mean:21.6, sd:4.74, low:20.665, high:22.53,  range:"18~24%",  minP:51, maxP:60 },
-  { label:"61~70%",  mean:23.6, sd:4.78, low:22.575, high:24.63,  range:"20~25%",  minP:61, maxP:70 },
-  { label:"71~80%",  mean:23.4, sd:5.23, low:21.455, high:25.35,  range:"21~24%",  minP:71, maxP:80 },
-  { label:"81~90%",  mean:26.3, sd:6.57, low:23.855, high:28.75,  range:"24~27%",  minP:81, maxP:90 },
-  { label:"91~100%", mean:26.7, sd:5.95, low:24.025, high:29.37,  range:"25~28%",  minP:91, maxP:100 },
-  { label:"101%~",   mean:31.4, sd:8.90, low:29.335, high:33.46,  range:"28~34%",  minP:101, maxP:9999 }
+var DATA=[
+  {label:"20~30%", mean:12.6,sd:3.58,low:11.785,high:13.42, range:"10~15%",minP:20,maxP:30},
+  {label:"31~40%", mean:16.2,sd:4.39,low:15.255,high:17.15, range:"14~18%",minP:31,maxP:40},
+  {label:"41~50%", mean:19.5,sd:4.70,low:18.565,high:20.43, range:"15~21%",minP:41,maxP:50},
+  {label:"51~60%", mean:21.6,sd:4.74,low:20.665,high:22.53, range:"18~24%",minP:51,maxP:60},
+  {label:"61~70%", mean:23.6,sd:4.78,low:22.575,high:24.63, range:"20~25%",minP:61,maxP:70},
+  {label:"71~80%", mean:23.4,sd:5.23,low:21.455,high:25.35, range:"21~24%",minP:71,maxP:80},
+  {label:"81~90%", mean:26.3,sd:6.57,low:23.855,high:28.75, range:"24~27%",minP:81,maxP:90},
+  {label:"91~100%",mean:26.7,sd:5.95,low:24.025,high:29.37, range:"25~28%",minP:91,maxP:100},
+  {label:"101%~",  mean:31.4,sd:8.90,low:29.335,high:33.46, range:"28~34%",minP:101,maxP:9999}
 ];
 
-var tbody = document.getElementById("tableBody");
-DATA.forEach(function(row, i) {
-  var div = document.createElement("div");
-  div.className = "table-row";
-  div.id = "row-" + i;
-  div.innerHTML =
-    '<span class="col-zone">' + row.label + '</span>' +
-    '<span class="col-mean">' + row.mean + '%</span>' +
-    '<span class="col-sd">' + row.sd + '</span>' +
-    '<span class="col-ci">' + row.low + '~<br/>' + row.high + '%</span>' +
-    '<span class="col-range">' + row.range + '</span>';
-  tbody.appendChild(div);
+var tb=document.getElementById("tableBody");
+DATA.forEach(function(r,i){
+  var d=document.createElement("div"); d.className="trow"; d.id="row-"+i;
+  d.innerHTML='<span class="tc1">'+r.label+'</span><span class="tc2">'+r.mean+'%</span><span class="tc3">'+r.sd+'</span><span class="tc4">'+r.low+'~<br/>'+r.high+'%</span><span class="tc5">'+r.range+'</span>';
+  tb.appendChild(d);
 });
 
-function fmt(n) { return Math.round(n).toLocaleString("ko-KR"); }
-function fmtD(n) { return n.toFixed(1); }
+function fmt(n){return Math.round(n).toLocaleString("ko-KR");}
+function fd(n){return n.toFixed(1);}
+function show(id){var e=document.getElementById(id);e.style.display="block";e.classList.add("show");}
+function hide(id){var e=document.getElementById(id);e.style.display="none";e.classList.remove("show");}
 
-function calc() {
-  var lowVal  = parseFloat(document.getElementById("lowInput").value);
-  var highVal = parseFloat(document.getElementById("highInput").value);
-  var curVal  = parseFloat(document.getElementById("curInput").value);
+function calc(){
+  var lv=parseFloat(document.getElementById("lowInput").value);
+  var hv=parseFloat(document.getElementById("highInput").value);
+  var cv=parseFloat(document.getElementById("curInput").value);
 
-  DATA.forEach(function(_, i) { document.getElementById("row-"+i).classList.remove("active"); });
-  ["riseBox","warnBox"].forEach(function(id){ document.getElementById(id).classList.remove("show"); });
-  ["resultBox","curPosition","zonesCard","dropTable"].forEach(function(id){
-    var el = document.getElementById(id);
-    el.classList.remove("show");
-    if(el.style) el.style.display = "";
-  });
+  DATA.forEach(function(_,i){document.getElementById("row-"+i).classList.remove("active");});
+  ["riseBox","warnBox"].forEach(function(id){document.getElementById(id).classList.remove("show");});
+  ["sResult","sBuy","sCur","sZones"].forEach(function(id){hide(id);});
 
-  if (isNaN(lowVal) || isNaN(highVal) || lowVal <= 0 || highVal <= lowVal) {
-    alert("저점과 고점을 올바르게 입력해주세요."); return;
-  }
+  if(isNaN(lv)||isNaN(hv)||lv<=0||hv<=lv){alert("저점과 고점을 올바르게 입력해주세요.");return;}
 
-  var rise = ((highVal - lowVal) / lowVal) * 100;
-  document.getElementById("riseValue").textContent = "+" + fmtD(rise) + "%";
+  var rise=((hv-lv)/hv)*100; // 고점 기준 상승률 (저점대비로 표기)
+  rise=((hv-lv)/lv)*100;
+  document.getElementById("riseValue").textContent="+"+fd(rise)+"%";
   document.getElementById("riseBox").classList.add("show");
 
-  var zoneIdx = -1;
-  DATA.forEach(function(r, i) { if (rise >= r.minP && rise <= r.maxP) zoneIdx = i; });
-  if (zoneIdx === -1) { document.getElementById("warnBox").classList.add("show"); return; }
+  var zi=-1;
+  DATA.forEach(function(r,i){if(rise>=r.minP&&rise<=r.maxP)zi=i;});
+  if(zi===-1){document.getElementById("warnBox").classList.add("show");return;}
+  document.getElementById("row-"+zi).classList.add("active");
+  var row=DATA[zi];
 
-  document.getElementById("row-"+zoneIdx).classList.add("active");
-  var row = DATA[zoneIdx];
+  var pH=hv*(1-row.low/100);   // 신뢰구간 상단 가격 (낙폭 최소)
+  var pM=hv*(1-row.mean/100);  // 평균 투매가
+  var pL=hv*(1-row.high/100);  // 신뢰구간 하단 가격 (낙폭 최대)
 
-  var priceHigh = highVal * (1 - row.low  / 100);
-  var priceMean = highVal * (1 - row.mean / 100);
-  var priceLow  = highVal * (1 - row.high / 100);
+  // 투매 예상
+  document.getElementById("resultGrid").innerHTML=
+    '<div class="result-item" style="border:1px solid #86efac44"><div class="ri-label">신뢰구간 상단<br/>낙폭 최소 '+row.low+'%</div><div class="ri-price" style="color:#86efac">'+fmt(pH)+'원</div></div>'+
+    '<div class="result-item" style="border:1px solid #fbbf2444"><div class="ri-label">⭐ 평균 투매가<br/>'+row.mean+'% 하락</div><div class="ri-price" style="color:#fbbf24">'+fmt(pM)+'원</div></div>'+
+    '<div class="result-item" style="border:1px solid #f8717144"><div class="ri-label">신뢰구간 하단<br/>낙폭 최대 '+row.high+'%</div><div class="ri-price" style="color:#f87171">'+fmt(pL)+'원</div></div>';
+  document.getElementById("resultNote").textContent=
+    "참고범위 "+row.range+" | 표준편차 "+row.sd+" · 변동성 "+(row.sd>=7?"높음 ⚠":row.sd>=5?"보통":"낮음");
+  show("sResult");
 
-  // 결과 요약
-  document.getElementById("resultTitle").textContent =
-    "📊 예상 투매 가격대 (고점 " + fmt(highVal) + "원 기준)";
-  document.getElementById("resultGrid").innerHTML =
-    '<div class="result-item" style="border:1px solid #86efac44">' +
-      '<div class="result-item-label">신뢰구간 상단<br/>(낙폭 최소 ' + row.low + '%)</div>' +
-      '<div class="result-item-price" style="color:#86efac">' + fmt(priceHigh) + '원</div>' +
-    '</div>' +
-    '<div class="result-item" style="border:1px solid #fbbf2444">' +
-      '<div class="result-item-label">평균 예상<br/>투매가 (' + row.mean + '%)</div>' +
-      '<div class="result-item-price" style="color:#fbbf24">' + fmt(priceMean) + '원</div>' +
-    '</div>' +
-    '<div class="result-item" style="border:1px solid #f8717144">' +
-      '<div class="result-item-label">신뢰구간 하단<br/>(낙폭 최대 ' + row.high + '%)</div>' +
-      '<div class="result-item-price" style="color:#f87171">' + fmt(priceLow) + '원</div>' +
-    '</div>';
-  document.getElementById("resultNote").textContent =
-    "* 참고범위 " + row.range + " | 표준편차 " + row.sd +
-    " (변동성 " + (row.sd >= 7 ? "높음 ⚠" : row.sd >= 5 ? "보통" : "낮음") + ")";
-  document.getElementById("resultBox").classList.add("show");
+  // 20등분
+  var step=(hv-lv)/20;
+  var zones=[];
+  for(var i=0;i<=20;i++) zones.push(lv+step*i);
+
+  // 핵심 매수포인트: 평균 투매가 최근접 구역
+  var coreIdx=0,minD=Infinity;
+  for(var i=0;i<=20;i++){var d=Math.abs(zones[i]-pM);if(d<minD){minD=d;coreIdx=i;}}
+
+  // 매수구역: 신뢰구간 안에 있는 모든 구역
+  var buyIdxs=[];
+  for(var i=0;i<=20;i++){if(zones[i]>=pL&&zones[i]<=pH)buyIdxs.push(i);}
+
+  // 후보군: 신뢰구간 상단(pH)보다 높은 가격의 바로 위 구역 1개
+  var candIdx=-1;
+  for(var i=20;i>=0;i--){if(zones[i]>pH){candIdx=i;break;}}
+
+  var cPrice=zones[coreIdx];
+  var cDrop=((hv-cPrice)/hv)*100;
+
+  // 핵심 매수포인트
+  document.getElementById("corePrice").textContent=fmt(cPrice)+"원";
+  document.getElementById("coreSub").textContent="평균 투매가("+fmt(pM)+"원)와 "+fmt(Math.abs(cPrice-pM))+"원 차이";
+  document.getElementById("coreZone").textContent="구역 "+coreIdx+"번";
+  document.getElementById("coreDrop").textContent="-"+fd(cDrop)+"%";
+
+  // 후보군
+  if(candIdx>=0){
+    var cprice=zones[candIdx];
+    var cdrop=((hv-cprice)/hv)*100;
+    document.getElementById("candPrice").textContent=fmt(cprice)+"원";
+    document.getElementById("candDrop").textContent="-"+fd(cdrop)+"% (고점 대비)";
+    document.getElementById("candSub").textContent="구역 "+candIdx+"번 | 신뢰구간 상단("+fmt(pH)+"원)보다 "+fmt(cprice-pH)+"원 위";
+    document.getElementById("candidateBox").style.display="flex";
+  } else {
+    document.getElementById("candidateBox").style.display="none";
+  }
+
+  // 신뢰구간 범위 시각화 바
+  // 바 범위: pL ~ (candIdx>=0 ? zones[candIdx] : pH) 를 100%로
+    '<div class="ci-info-item" style="background:#1e1a04;border:1px solid #fbbf2433"><div class="ci-info-label" style="color:#fbbf24">⭐ 평균 투매가</div><div class="ci-info-value" style="color:#fbbf24">'+fmt(pM)+'원</div><div class="ci-info-sub">고점 대비 -'+row.mean+'%</div></div>'+
+    '<div class="ci-info-item" style="background:#2d1a00;border:1px solid #f59e0b55"><div class="ci-info-label" style="color:#f59e0b">⚡ 핵심 매수포인트</div><div class="ci-info-value" style="color:#f59e0b">'+fmt(cPrice)+'원</div><div class="ci-info-sub">구역 '+coreIdx+'번 · -'+fd(cDrop)+'%</div></div>';
+
+  document.getElementById("buyNote").textContent=
+    "매수구역 "+buyIdxs.length+"개 구역 포괄 | "+fmt(pL)+"원 ~ "+fmt(pH)+"원";
+  show("sBuy");
 
   // 현재가
-  var curPos = document.getElementById("curPosition");
-  var hasCur = !isNaN(curVal) && curVal > 0 && curVal <= highVal;
-  if (hasCur) {
-    var curDrop = ((highVal - curVal) / highVal) * 100;
-    var toMean  = curVal - priceMean;
-    document.getElementById("curPriceLabel").textContent = fmt(curVal) + "원";
-    document.getElementById("curDropPct").textContent = "-" + fmtD(curDrop) + "% (" + fmt(highVal - curVal) + "원 하락)";
-    document.getElementById("curToMean").textContent =
-      toMean > 0
-        ? "▼ " + fmt(toMean) + "원 (" + fmtD((toMean/highVal)*100) + "%) 추가 하락 예상"
-        : "✅ 이미 평균 투매가 이하";
-    curPos.classList.add("show");
+  var hasCur=!isNaN(cv)&&cv>0&&cv<=hv;
+  if(hasCur){
+    var curDrop=((hv-cv)/hv)*100;
+    var toCore=cv-cPrice;
+    var toCand=candIdx>=0?cv-zones[candIdx]:null;
+    var toBuyTop=cv-pH;
+    document.getElementById("curGrid").innerHTML=
+      '<div class="cur-item"><div class="cur-item-label">현재가</div><div class="cur-item-value" style="color:#a78bfa">'+fmt(cv)+'원</div></div>'+
+      '<div class="cur-item"><div class="cur-item-label">고점 대비 하락</div><div class="cur-item-value" style="color:#f87171">-'+fd(curDrop)+'%</div></div>'+
+      '<div class="cur-item"><div class="cur-item-label">핵심 매수포인트까지</div><div class="cur-item-value" style="color:#f59e0b">'+(toCore>0?"▼"+fmt(toCore)+"원":"✅ 이하")+'</div></div>'+
+      '<div class="cur-item"><div class="cur-item-label">매수구역 진입까지</div><div class="cur-item-value" style="color:#4ade80">'+(toBuyTop>0?"▼"+fmt(toBuyTop)+"원":"✅ 구역 안")+'</div></div>';
+    show("sCur");
   }
 
-  // ========== 20등분 시각화 ==========
-  var step = (highVal - lowVal) / 20;
-  document.getElementById("zonesSub").textContent =
-    "구간 간격: " + fmt(step) + "원 | 저점 " + fmt(lowVal) + "원 ~ 고점 " + fmt(highVal) + "원";
+  // 20등분 시각화
+  document.getElementById("zonesSub").textContent=
+    "구간 간격 "+fmt(step)+"원  |  저점 "+fmt(lv)+"원 ~ 고점 "+fmt(hv)+"원";
+  var zbar=document.getElementById("zonesBar"); zbar.innerHTML="";
 
-  var zonesBar = document.getElementById("zonesBar");
-  zonesBar.innerHTML = "";
+  for(var i=20;i>=0;i--){
+    var zp=zones[i];
+    var zd=((hv-zp)/hv)*100;
+    var isCore=(i===coreIdx);
+    var isBuy=(buyIdxs.indexOf(i)!==-1);
+    var isCand=(i===candIdx);
+    var isMean=(Math.abs(zp-pM)<step*0.5)&&isBuy;
+    var isCur=hasCur&&(Math.abs(zp-cv)<step*0.55);
+    var isTop=(i===20),isBot=(i===0);
 
-  // 구역 1(최상단=고점) ~ 21(최하단=저점) 순서로 위에서 아래로 표시
-  for (var i = 20; i >= 0; i--) {
-    var price = lowVal + step * i;
-    // 이 가격의 고점 대비 하락률
-    var dropFromHigh = ((highVal - price) / highVal) * 100;
+    var segCls="zone-seg ";
+    var priceColor="#fff";
+    if(isTop)       {segCls+="seg-top";}
+    else if(isBot)  {segCls+="seg-bot";}
+    else if(isCore) {segCls+="seg-core"; priceColor="#f59e0b";}
+    else if(isCur)  {segCls+="seg-cur";  priceColor="#a78bfa";}
+    else if(isCand) {segCls+="seg-candidate"; priceColor="#38bdf8";}
+    else if(isMean) {segCls+="seg-mean"; priceColor="#fbbf24";}
+    else if(isBuy)  {segCls+="seg-buy";  priceColor="#86efac";}
+    else            {segCls+="seg-normal";}
 
-    // 색상 결정
-    var bg, badge = "", badgeColor = "", badgeBg = "";
+    var seg=document.createElement("div"); seg.className=segCls;
 
-    if (i === 20) {
-      // 고점
-      bg = "#7f1d1d";
-      badge = "고점";
-      badgeBg = "#f87171";
-      badgeColor = "#0d0f14";
-    } else if (i === 0) {
-      // 저점
-      bg = "#0c2a40";
-      badge = "저점";
-      badgeBg = "#38bdf8";
-      badgeColor = "#0d0f14";
-    } else {
-      // 투매 평균가 구역 (±1구간)
-      var isMean = (price <= priceMean * 1.015 && price >= priceMean * 0.985);
-      // 신뢰구간 내
-      var isCI   = (price <= priceHigh && price >= priceLow);
-      // 현재가 구역
-      var isCur  = hasCur && (price <= curVal * 1.015 && price >= curVal * 0.985);
+    var badge="", badgeBg="", badgeColor="#0d0f14";
+    if(isTop)       {badge="고점";      badgeBg="#f87171";}
+    else if(isBot)  {badge="저점";      badgeBg="#38bdf8";}
+    else if(isCore) {badge="⚡핵심매수"; badgeBg="#f59e0b";}
+    else if(isCur)  {badge="현재가";    badgeBg="#a78bfa";}
+    else if(isCand) {badge="후보군";    badgeBg="#38bdf8";}
+    else if(isMean) {badge="평균투매가"; badgeBg="#fbbf24";}
+    else if(isBuy)  {badge="매수";      badgeBg="#4ade80";}
 
-      if (isCur) {
-        bg = "#2e1a4a";
-        badge = "현재가";
-        badgeBg = "#a78bfa";
-        badgeColor = "#0d0f14";
-      } else if (isMean) {
-        bg = "#2d2006";
-        badge = "★평균 투매가";
-        badgeBg = "#fbbf24";
-        badgeColor = "#0d0f14";
-      } else if (isCI) {
-        bg = "#0f2e1a";
-        badge = "▲매수 구역";
-        badgeBg = "#4ade80";
-        badgeColor = "#0d0f14";
-      } else if (dropFromHigh < row.low) {
-        bg = "#1a1f2e";
-      } else {
-        bg = "#1a1f2e";
-      }
-    }
-
-    var seg = document.createElement("div");
-    seg.className = "zone-segment";
-    seg.style.background = bg;
-
-    var numEl = document.createElement("span");
-    numEl.className = "zone-num";
-    numEl.textContent = i === 20 ? "▲" : i === 0 ? "▼" : i;
-    seg.appendChild(numEl);
-
-    var priceEl = document.createElement("span");
-    priceEl.className = "zone-price";
-    priceEl.textContent = fmt(price) + "원";
-    seg.appendChild(priceEl);
-
-    if (badge) {
-      var badgeEl = document.createElement("span");
-      badgeEl.className = "zone-badge";
-      badgeEl.style.background = badgeBg;
-      badgeEl.style.color = badgeColor;
-      badgeEl.textContent = badge;
-      seg.appendChild(badgeEl);
-    } else {
-      // 하락률 표시
-      var dropEl = document.createElement("span");
-      dropEl.style.cssText = "font-size:9px;color:#475569;margin-left:4px;white-space:nowrap;";
-      dropEl.textContent = "-" + fmtD(dropFromHigh) + "%";
-      seg.appendChild(dropEl);
-    }
-
-    zonesBar.appendChild(seg);
+    seg.innerHTML=
+      '<span class="zone-num">'+(isTop?"▲":isBot?"▼":i)+'</span>'+
+      '<span class="zone-p" style="color:'+priceColor+';font-weight:'+(isCore||isBuy||isCand?"800":"700")+'">'+fmt(zp)+'원</span>'+
+      (badge?'<span class="zone-bdg" style="background:'+badgeBg+';color:'+badgeColor+'">'+badge+'</span>':'<span class="zone-d">-'+fd(zd)+'%</span>');
+    zbar.appendChild(seg);
   }
-  document.getElementById("zonesCard").classList.add("show");
-
-  // 하락폭 테이블
-  var dropBody = document.getElementById("dropBody");
-  dropBody.innerHTML = "";
-  var maxDrop = Math.ceil(row.high / 5) * 5 + 5;
-  for (var p = 5; p <= maxDrop; p += 5) {
-    var pr = highVal * (1 - p / 100);
-    var diff = highVal - pr;
-    var note = "", extraCls = "";
-    var isMeanRow = (p >= row.mean - 2.5 && p < row.mean + 2.5);
-    var isCIRow   = (p >= row.low && p <= row.high);
-    if (isMeanRow) { note = "⭐ 평균 투매가"; extraCls = "zone-row"; }
-    else if (isCIRow) { note = "✅ 신뢰구간 내"; extraCls = "zone-row"; }
-    else if (p < row.low) { note = "구간 위"; }
-    else { note = "구간 아래"; }
-    if (hasCur) {
-      var cd = ((highVal - curVal) / highVal) * 100;
-      if (Math.abs(cd - p) < 2.5) { extraCls = "cur-row-hl"; note += " ◀현재"; }
-    }
-    var dr = document.createElement("div");
-    dr.className = "drop-row " + extraCls;
-    dr.innerHTML =
-      '<span class="drop-col-pct" style="color:' + (extraCls==="zone-row"?"#4ade80":extraCls==="cur-row-hl"?"#a78bfa":"#94a3b8") + '">-' + p + '%</span>' +
-      '<span class="drop-col-price" style="color:' + (extraCls==="zone-row"?"#fbbf24":"#e2e8f0") + '">' + fmt(pr) + '원</span>' +
-      '<span class="drop-col-price" style="color:#f87171;font-size:12px">-' + fmt(diff) + '</span>' +
-      '<span class="drop-col-note">' + note + '</span>';
-    dropBody.appendChild(dr);
-  }
-  document.getElementById("dropTable").classList.add("show");
+  show("sZones");
 }
 </script>
 </body>
